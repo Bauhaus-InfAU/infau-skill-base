@@ -2,6 +2,35 @@
 
 Academic skills for Claude Code at the InfAU chair (Informatik in der Architektur und Urbanistik), Bauhaus-Universität Weimar.
 
+## Installation (Private Repository)
+
+### Prerequisites
+
+Authenticate with GitHub:
+```bash
+gh auth login
+```
+
+### Add the Marketplace
+
+```
+/plugin marketplace add Bauhaus-InfAU/infau-skill-base
+```
+
+### Install Plugins
+
+```
+/plugin install research@infau-skills
+/plugin install data@infau-skills
+```
+
+### For Auto-Updates (Optional)
+
+Set GitHub token in your shell config (`~/.bashrc` or `~/.zshrc`):
+```bash
+export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+```
+
 ## What is this?
 
 This repository contains domain-specific plugins for Claude Code that help with common academic tasks. Each domain plugin includes skills (reusable prompts) and commands (slash commands) that guide Claude through specific workflows.
@@ -29,32 +58,23 @@ Claude will:
 
 ### Data (`data/`)
 
-Data management and analysis workflows.
+Data management and analysis workflows for SQL, visualization, dashboards, and data validation.
 
-## Installation
-
-### For Claude Code users
-
-1. Clone or download this repository
-2. Copy the domain plugin folder (e.g., `research/`) to your Claude plugins directory:
-   - Windows: `%USERPROFILE%\.claude\plugins\`
-   - macOS/Linux: `~/.claude/plugins/`
-3. Restart Claude Code
-
-The commands will be available immediately after installation.
-
-### Alternative: Project-specific installation
-
-To use these skills only in a specific project:
-
-1. Copy the domain plugin folder (e.g., `research/`) to your project root
-2. The commands will be available when working in that project
+**Commands:**
+- `/analyze` - Answer data questions
+- `/explore-data` - Profile and explore datasets
+- `/write-query` - Write optimized SQL
+- `/create-viz` - Create publication-quality visualizations
+- `/build-dashboard` - Build interactive HTML dashboards
+- `/validate` - QA analyses before sharing
 
 ## Structure
 
 ```
 skill-base/
-├── .claude-plugin/                   # Root plugin manifest
+├── .claude-plugin/                   # Root plugin manifest + marketplace
+│   ├── plugin.json
+│   └── marketplace.json
 ├── research/                         # Research domain plugin
 │   ├── .claude-plugin/
 │   ├── commands/
@@ -83,4 +103,4 @@ Want to add your own skill? See [CONTRIBUTING.md](CONTRIBUTING.md) for a step-by
 
 ## License
 
-Internal use at Bauhaus-Universität Weimar.
+MIT License - see [LICENSE](LICENSE) for details.

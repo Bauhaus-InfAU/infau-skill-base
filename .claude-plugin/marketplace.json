@@ -1,0 +1,27 @@
+{
+  "name": "infau-skills",
+  "owner": {
+    "name": "InfAU - Bauhaus-Universität Weimar"
+  },
+  "metadata": {
+    "description": "Academic skills for research planning and data analysis",
+    "version": "1.0.0",
+    "pluginRoot": "./"
+  },
+  "plugins": [
+    {
+      "name": "research",
+      "source": "./research",
+      "description": "Research planning and problem selection framework",
+      "version": "1.0.0",
+      "keywords": ["research", "academic", "FINER", "PICO"]
+    },
+    {
+      "name": "data",
+      "source": "./data",
+      "description": "Data analysis, SQL, visualization, and dashboards",
+      "version": "1.0.0",
+      "keywords": ["data", "sql", "visualization", "dashboard"]
+    }
+  ]
+}
