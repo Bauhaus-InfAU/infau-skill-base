@@ -1,4 +1,0 @@
-Background and Problem
-Caregivers often children navigate daily errands with infants and toddlers in environments largely inadequately designed for young children. By treating playgrounds as the primary integration tool, urban planning segregates children into "bubbles" rather than including them in the city at large. This creates a Care-Gap that fails to support the simultaneous logistical needs of adults and the developmental needs of children. This research argues that the resulting friction is a symptom of design failure that denies children a place in everyday life and prevents the caregiver-child pair from navigating the city with ease and dignity.
-Research Question
-"How can computational simulation evaluate the impact of micro-scale interventions in fostering spatial synchronization and enhancing the shared daily routine of the caregiver-child pair?"
