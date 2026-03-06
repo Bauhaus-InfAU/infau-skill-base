@@ -1,0 +1,8 @@
+{
+  "name": "grasshopper",
+  "version": "1.0.0",
+  "description": "Grasshopper/Rhino tools — convert GHX definitions to LLM-readable markdown and RAG summaries",
+  "author": {
+    "name": "InfAU - Bauhaus-Universität Weimar"
+  }
+}
