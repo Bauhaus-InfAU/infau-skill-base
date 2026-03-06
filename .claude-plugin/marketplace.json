@@ -12,16 +12,23 @@
     {
       "name": "research",
       "source": "./research",
-      "description": "Research planning and problem selection framework",
+      "description": "Research planning and problem selection framework for academic research in computational design, urban planning, and sustainable building",
       "version": "1.0.0",
-      "keywords": ["research", "academic", "FINER", "PICO"]
+      "keywords": ["research", "academic", "FINER", "PICO", "deep-research"]
     },
     {
       "name": "data",
       "source": "./data",
-      "description": "Data analysis, SQL, visualization, and dashboards",
+      "description": "Write SQL, explore datasets, and generate insights faster. Build visualizations and dashboards, and turn raw data into clear stories for stakeholders.",
       "version": "1.0.0",
-      "keywords": ["data", "sql", "visualization", "dashboard"]
+      "keywords": ["data", "sql", "visualization", "dashboard", "pdf", "statistics", "analysis"]
+    },
+    {
+      "name": "grasshopper",
+      "source": "./grasshopper",
+      "description": "Grasshopper/Rhino tools — convert GHX definitions to LLM-readable markdown and RAG summaries",
+      "version": "1.0.0",
+      "keywords": ["grasshopper", "rhino", "ghx", "3d-modeling"]
     }
   ]
 }
