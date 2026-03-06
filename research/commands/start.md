@@ -25,6 +25,7 @@ List the research skills available in this plugin:
 | Skill | What It Does |
 |-------|-------------|
 | **Scientific Problem Selection** | Systematic framework for choosing and planning research problems |
+| **Deep Research** | Enterprise-grade research with 8-phase pipeline, citation tracking, and multi-source synthesis |
 
 The Scientific Problem Selection framework includes 9 interconnected skills:
 
@@ -56,6 +57,7 @@ Ask the researcher what they're working on today. Suggest starting points based 
 3. **Risk evaluation** — "Help me assess the risks in my project"
 4. **Grant/thesis planning** — "Help me create project documentation"
 5. **Strategic decision** — "I need advice on a research strategy question"
+6. **Deep research** — "I need a comprehensive analysis of a topic with citations"
 
 Wait for the user's response and guide them to the appropriate skills.
 

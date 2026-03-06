@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\\\Work\\\\GitHub\\\\skill-base'' -Recurse | Measure-Object -Property Length -Sum | Select-Object @{N=''TotalSize'';E={''{0:N0}'' -f $_Sum}}\")",
+      "Skill(research:scientific-problem-selection)",
+      "Bash(python:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(cp:*)",
+      "Skill(commit-commands:commit-push-pr)"
+    ]
+  }
+}
