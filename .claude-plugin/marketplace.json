@@ -14,7 +14,7 @@
       "source": "./research",
       "description": "Research planning and problem selection framework for academic research in computational design, urban planning, and sustainable building",
       "version": "1.0.0",
-      "keywords": ["research", "academic", "FINER", "PICO", "deep-research"]
+      "keywords": ["research", "academic", "FINER", "PICO", "deep-research", "research-plan", "problem-selection"]
     },
     {
       "name": "docs",

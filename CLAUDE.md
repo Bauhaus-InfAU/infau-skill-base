@@ -14,7 +14,7 @@ skill-base/
 ├── research/                    # Research domain plugin
 │   ├── .claude-plugin/
 │   ├── commands/
-│   │   ├── start.md
+│   │   ├── research-plan.md
 │   │   └── research-question.md
 │   ├── skills/
 │   │   ├── research-question/
@@ -55,5 +55,5 @@ Commands in `domain/commands/` are markdown files where:
 ## Available Commands
 
 ### Research Domain
-- `/start` - Begin research planning workflow
+- `/research-plan [topic]` - Plan research projects using scientific problem selection framework
 - `/research-question [question]` - Improve research questions using FINER/PICO frameworks

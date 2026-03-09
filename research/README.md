@@ -8,7 +8,7 @@ Research planning and problem selection framework for academic research in compu
 
 | Command | Purpose |
 |---------|---------|
-| `/start` | Begin research planning workflow |
+| `/research-plan` | Plan research projects using the scientific problem selection framework |
 | `/research-question` | Improve research questions using FINER/PICO frameworks |
 
 ### Skills (Research Workflows)
@@ -51,10 +51,10 @@ A comprehensive framework for research problem selection based on Fischbach & Wa
 # Install the plugin
 /install your-org/skill-base research
 
-# Run the start command to begin
-/start
+# Plan a research project using scientific problem selection
+/research-plan [your idea or topic here]
 
-# Or jump directly to research question improvement
+# Improve a research question using FINER/PICO frameworks
 /research-question [your question here]
 ```
 
