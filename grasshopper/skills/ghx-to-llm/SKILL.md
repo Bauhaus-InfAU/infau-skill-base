@@ -56,6 +56,7 @@ python .claude/skills/ghx-to-llm/scripts/ghx_to_llm.py "path/to/Definition.ghx"
 - **Input format**: Must be `.ghx` (XML-based), not binary `.gh`
 - **Python**: 3.8+ with standard library only (no external dependencies)
 - **Better output**: Groups in Grasshopper improve output structure significantly
+- **Cluster internals** (optional): Requires .NET 8+ SDK and Rhino 8 installed (for `GH_IO.dll`). Without these, clusters still appear as labeled components with I/O, but the `## CLUSTERS` section showing internal components is skipped
 
 ## Quick Decision Tree
 
@@ -76,6 +77,8 @@ The converter produces structured markdown with:
 - Parameter values (sliders, toggles, panels)
 - Data flow references (e.g., `5.1` = component 5, output 1)
 - Modifiers: F=Flatten, G=Graft, S=Simplify, R=Reverse
+- Clusters labeled as `Cluster"Name"[I/O]` with descriptions
+- `## CLUSTERS` section showing internal components of each cluster (requires .NET + Rhino 8)
 
 ## Phase 2: Summary Structure Template
 

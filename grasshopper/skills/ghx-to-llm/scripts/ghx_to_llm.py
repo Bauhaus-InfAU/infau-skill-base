@@ -30,7 +30,10 @@ ID NUMBERING STRATEGY:
 
 import argparse
 import io
+import shutil
+import subprocess
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 
 # Fix Windows console encoding
@@ -239,6 +242,75 @@ def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str
                                     comp.x = float(bx.text)
                                 if by is not None and by.text:
                                     comp.y = float(by.text)
+
+                # Cluster detection: check for ClusterDocument stream
+                is_cluster = any(
+                    item.get("name") == "ClusterDocument"
+                    for item in container.iter("item")
+                )
+                if is_cluster:
+                    type_name = "Cluster"
+                    description = get_item_value(container_items, "Description")
+                    comp = Component(
+                        instance_guid=instance_guid,
+                        type_name="Cluster",
+                        nick_name=nick_name,
+                        value=description if description else None
+                    )
+                    # Extract position
+                    attributes = container.find(".//chunk[@name='Attributes']")
+                    if attributes is not None:
+                        attr_items = attributes.find("items")
+                        if attr_items is not None:
+                            pivot = attr_items.find(".//item[@name='Pivot']")
+                            if pivot is not None:
+                                px = pivot.find("X")
+                                py = pivot.find("Y")
+                                if px is not None and px.text:
+                                    comp.x = float(px.text)
+                                if py is not None and py.text:
+                                    comp.y = float(py.text)
+                            else:
+                                bounds = attr_items.find(".//item[@name='Bounds']")
+                                if bounds is not None:
+                                    bx = bounds.find("X")
+                                    by = bounds.find("Y")
+                                    if bx is not None and bx.text:
+                                        comp.x = float(bx.text)
+                                    if by is not None and by.text:
+                                        comp.y = float(by.text)
+
+                    # ParameterData handles cluster I/O
+                    param_data = container.find(".//chunk[@name='ParameterData']")
+                    if param_data is not None:
+                        for param_chunk in param_data.findall(".//chunk[@name='InputParam']"):
+                            param_items = param_chunk.find("items")
+                            if param_items is None:
+                                continue
+                            param_name = get_item_value(param_items, "NickName") or get_item_value(param_items, "Name")
+                            comp.inputs.append(InputParam(
+                                name=param_name,
+                                instance_guid=get_item_value(param_items, "InstanceGuid"),
+                                sources=get_item_values(param_items, "Source"),
+                                modifiers=extract_modifiers(param_items)
+                            ))
+                        for param_chunk in param_data.findall(".//chunk[@name='OutputParam']"):
+                            param_items = param_chunk.find("items")
+                            if param_items is None:
+                                continue
+                            param_name = get_item_value(param_items, "NickName") or get_item_value(param_items, "Name")
+                            param_guid = get_item_value(param_items, "InstanceGuid")
+                            output = OutputParam(
+                                name=param_name,
+                                instance_guid=param_guid,
+                                index=len(comp.outputs) + 1,
+                                modifiers=extract_modifiers(param_items)
+                            )
+                            comp.outputs.append(output)
+                            outputs[param_guid] = (instance_guid, output.index)
+
+                    components[instance_guid] = comp
+                    continue
 
                 # Special component handling
                 if type_name == "Panel":
@@ -471,11 +543,121 @@ def build_global_id_map(
     return {guid: idx for idx, guid in enumerate(topo_order, start=1)}
 
 
+@dataclass
+class ClusterInternals:
+    """Parsed internals of a cluster definition."""
+    nick_name: str
+    description: str
+    components: dict[str, Component]
+    outputs: dict[str, tuple[str, int]]
+    groups: list[Group]
+
+
+def resolve_clusters(
+    ghx_path: str,
+    components: dict[str, Component]
+) -> dict[str, ClusterInternals]:
+    """
+    Resolve cluster internals by calling the C# ClusterResolver tool.
+
+    Returns a dict mapping cluster InstanceGuid -> ClusterInternals.
+    Fails gracefully if dotnet is unavailable or the tool fails.
+    """
+    cluster_guids = [
+        guid for guid, comp in components.items()
+        if comp.type_name == "Cluster"
+    ]
+    if not cluster_guids:
+        return {}
+
+    # Check if dotnet is available
+    if shutil.which("dotnet") is None:
+        print("Note: 'dotnet' not found, skipping cluster internals resolution", file=sys.stderr)
+        return {}
+
+    resolver_dir = Path(__file__).parent / "cluster_resolver"
+    if not resolver_dir.exists():
+        print("Note: cluster_resolver project not found, skipping cluster internals", file=sys.stderr)
+        return {}
+
+    result: dict[str, ClusterInternals] = {}
+    tmp_dir = tempfile.mkdtemp(prefix="cluster_resolve_")
+
+    try:
+        proc = subprocess.run(
+            ["dotnet", "run", "--project", str(resolver_dir), "--", ghx_path, tmp_dir],
+            capture_output=True, text=True, timeout=60
+        )
+        if proc.returncode != 0:
+            stderr = proc.stderr.strip()
+            if stderr:
+                print(f"Note: ClusterResolver failed: {stderr}", file=sys.stderr)
+            return {}
+
+        resolved_guids = [line.strip() for line in proc.stdout.strip().splitlines() if line.strip()]
+
+        for guid in resolved_guids:
+            cluster_ghx = Path(tmp_dir) / f"{guid}.ghx"
+            if not cluster_ghx.exists():
+                continue
+
+            try:
+                cluster_comps, cluster_outputs, cluster_groups = parse_ghx(str(cluster_ghx))
+                comp = components.get(guid)
+                nick = comp.nick_name if comp else guid
+                desc = comp.value if comp else ""
+                result[guid] = ClusterInternals(
+                    nick_name=nick,
+                    description=desc or "",
+                    components=cluster_comps,
+                    outputs=cluster_outputs,
+                    groups=cluster_groups
+                )
+            except Exception as e:
+                print(f"Note: Failed to parse cluster {guid} internals: {e}", file=sys.stderr)
+
+    except subprocess.TimeoutExpired:
+        print("Note: ClusterResolver timed out, skipping cluster internals", file=sys.stderr)
+    except FileNotFoundError:
+        print("Note: Could not run dotnet, skipping cluster internals", file=sys.stderr)
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+
+    return result
+
+
+def format_cluster_internals(internals: ClusterInternals, letter: str = "") -> list[str]:
+    """Format the internal components of a cluster for the CLUSTERS section."""
+    lines: list[str] = []
+
+    id_map = build_global_id_map(internals.components, internals.outputs)
+
+    # Build letter-prefixed ID map (e.g. "A1", "A2") for cross-referencing
+    if letter:
+        str_id_map: dict[str, int | str] = {guid: f"{letter}{v}" for guid, v in id_map.items()}
+    else:
+        str_id_map = id_map
+
+    # Sort components spatially
+    sorted_guids = sorted(
+        internals.components.keys(),
+        key=lambda g: (internals.components[g].x, internals.components[g].y)
+    )
+
+    for guid in sorted_guids:
+        comp = internals.components[guid]
+        comp_id = str_id_map[guid]
+        lines.append(format_component(comp, comp_id, str_id_map, internals.outputs))
+
+    return lines
+
+
 def format_component(
     comp: Component,
-    comp_id: int,
-    id_map: dict[str, int],
-    outputs: dict[str, tuple[str, int]]
+    comp_id: int | str,
+    id_map: dict[str, int | str],
+    outputs: dict[str, tuple[str, int]],
+    cluster_letter: str = "",
 ) -> str:
     """Format a single component as a text line."""
 
@@ -533,6 +715,47 @@ def format_component(
             return f'{{{comp_id}}} Number[{ref}→{comp_id}.1]'
         return f'{{{comp_id}}} Number[→{comp_id}.1]'
 
+    # --- Cluster (uses general I/O formatting + description comment) ---
+    if comp.type_name == "Cluster":
+        letter_tag = f"({cluster_letter})" if cluster_letter else ""
+        header = f'{{{comp_id}}} Cluster{letter_tag}"{comp.nick_name}"'
+
+        input_parts = []
+        for inp in comp.inputs:
+            if inp.sources:
+                refs = [resolve(src, inp.modifiers) for src in inp.sources]
+                if len(refs) == 1:
+                    input_parts.append(f"{inp.name}:{refs[0]}")
+                else:
+                    input_parts.append(f"{inp.name}:[{','.join(refs)}]")
+
+        def format_cluster_output(out: OutputParam) -> str:
+            ref = f"{out.name}:{comp_id}.{out.index}"
+            if out.modifiers:
+                ref += "".join(sorted(out.modifiers))
+            return ref
+
+        output_parts = [format_cluster_output(out) for out in comp.outputs]
+
+        inp_str = ",".join(input_parts)
+        out_str = ",".join(output_parts)
+
+        if inp_str and out_str:
+            line = f"{header}[{inp_str} → {out_str}]"
+        elif inp_str:
+            line = f"{header}[{inp_str}→]"
+        elif out_str:
+            line = f"{header}[→{out_str}]"
+        else:
+            line = header
+
+        # Append description as comment (skip generic default)
+        if comp.value and comp.value != "Contains a cluster of Grasshopper components":
+            desc = comp.value[:80] + "..." if len(comp.value) > 80 else comp.value
+            line += f" // {desc}"
+
+        return line
+
     # --- General component ---
     if comp.nick_name and comp.nick_name != comp.type_name:
         header = f'{{{comp_id}}} {comp.type_name}"{comp.nick_name}"'
@@ -572,7 +795,8 @@ def generate_output(
     components: dict[str, Component],
     outputs: dict[str, tuple[str, int]],
     groups: list[Group],
-    filename: str = ""
+    filename: str = "",
+    cluster_internals: dict[str, ClusterInternals] | None = None
 ) -> str:
     """Generate the compact LLM-readable text output."""
     lines = []
@@ -797,6 +1021,32 @@ def generate_output(
         return (999999.0, 999999.0)
 
     # =========================================================================
+    # 5b. Build cluster letter map (A, B, C...) for cross-referencing
+    # =========================================================================
+    guid_to_letter: dict[str, str] = {}
+    cluster_letter_map: dict[str, str] = {}  # nick_name.upper() -> "A", "B", ...
+
+    if cluster_internals:
+        # Group cluster instance GUIDs by nick_name, track min topo ID per name
+        name_to_guids: dict[str, list[str]] = {}
+        name_to_min_topo: dict[str, int] = {}
+        for guid, comp in components.items():
+            if comp.type_name == "Cluster":
+                name_key = comp.nick_name.strip().upper()
+                name_to_guids.setdefault(name_key, []).append(guid)
+                topo_id = global_id_map.get(guid, 999999)
+                if name_key not in name_to_min_topo or topo_id < name_to_min_topo[name_key]:
+                    name_to_min_topo[name_key] = topo_id
+
+        # Assign letters in topological order of first appearance
+        sorted_names = sorted(name_to_min_topo.keys(), key=lambda n: name_to_min_topo[n])
+        for i, name_key in enumerate(sorted_names):
+            letter = chr(ord('A') + i)
+            cluster_letter_map[name_key] = letter
+            for guid in name_to_guids[name_key]:
+                guid_to_letter[guid] = letter
+
+    # =========================================================================
     # 6. Render
     # =========================================================================
     output_components: set[str] = set()
@@ -808,7 +1058,7 @@ def generate_output(
             if comp and guid not in output_components:
                 output_components.add(guid)
                 comp_id = global_id_map[guid]
-                lines.append(f"{indent}{format_component(comp, comp_id, global_id_map, outputs)}")
+                lines.append(f"{indent}{format_component(comp, comp_id, global_id_map, outputs, cluster_letter=guid_to_letter.get(guid, ''))}")
 
     for _min_x, _min_y, group in group_positions:
         all_members = get_all_component_members(group)
@@ -847,7 +1097,7 @@ def generate_output(
             comp = components.get(guid)
             if comp:
                 output_components.add(guid)
-                lines.append(format_component(comp, global_id_map[guid], global_id_map, outputs))
+                lines.append(format_component(comp, global_id_map[guid], global_id_map, outputs, cluster_letter=guid_to_letter.get(guid, '')))
 
         lines.append("")
 
@@ -860,12 +1110,56 @@ def generate_output(
         for guid in remaining:
             comp = components.get(guid)
             if comp:
-                lines.append(format_component(comp, global_id_map[guid], global_id_map, outputs) + "  ")
+                lines.append(format_component(comp, global_id_map[guid], global_id_map, outputs, cluster_letter=guid_to_letter.get(guid, '')) + "  ")
         lines.append("")
 
     # =========================================================================
-    # 7. Header (appended at top)
+    # 7. CLUSTERS section (after all groups, before header)
     # =========================================================================
+    cluster_count = sum(1 for c in components.values() if c.type_name == "Cluster")
+
+    if cluster_internals:
+        # Deduplicate by nick_name: same cluster type used multiple times
+        # has identical internals, so show it only once
+        seen_names: set[str] = set()
+        cluster_sections: list[tuple[str, str, str, list[str]]] = []
+
+        for guid, internals in cluster_internals.items():
+            name_key = internals.nick_name.strip().upper()
+            if name_key in seen_names:
+                continue
+            seen_names.add(name_key)
+
+            letter = cluster_letter_map.get(name_key, "")
+            desc = internals.description
+            if desc == "Contains a cluster of Grasshopper components":
+                desc = ""
+            internal_lines = format_cluster_internals(internals, letter=letter)
+            cluster_sections.append((name_key, letter, desc, internal_lines))
+
+        if cluster_sections:
+            lines.append("## CLUSTERS")
+            lines.append("")
+            for name_key, letter, desc, internal_lines in cluster_sections:
+                if letter:
+                    lines.append(f"### CLUSTER {letter}: {name_key}")
+                else:
+                    lines.append(f"### CLUSTER: {name_key}")
+                if desc:
+                    desc_trunc = desc[:120] + "..." if len(desc) > 120 else desc
+                    lines.append(f"// {desc_trunc}")
+                lines.append("```")
+                lines.extend(internal_lines)
+                lines.append("```")
+                lines.append("")
+
+    # =========================================================================
+    # 8. Header (appended at top)
+    # =========================================================================
+    stats_parts = [f"Components: {len(components)}", f"Groups: {group_num}"]
+    if cluster_count > 0:
+        stats_parts.append(f"Clusters: {cluster_count}")
+
     header_lines = [
         f"# Grasshopper Definition: {filename}" if filename else "# Grasshopper Definition",
         "",
@@ -875,10 +1169,11 @@ def generate_output(
         "- **Wiring**: `source_id.output_num` (e.g., `5.1` = component 5, output 1)",
         "- **Data flow**: Follow wire references to trace connections between components",
         "- **Modifiers**: F=Flatten, G=Graft, S=Simplify, R=Reverse (appended to wire refs)",
+        "- **Clusters**: `Cluster(A)\"Name\"` = reusable sub-definition; internals in CLUSTER A section with {A1} IDs",
         "- **ID order**: IDs reflect topological data-flow order  -  lower ID = earlier in pipeline",
         "",
         "## Stats",
-        f"Components: {len(components)} | Groups: {group_num}",
+        " | ".join(stats_parts),
         "",
     ]
 
@@ -905,7 +1200,15 @@ def main():
 
     try:
         components, outputs, groups = parse_ghx(str(input_path))
-        result = generate_output(components, outputs, groups, filename=input_path.name)
+
+        # Resolve cluster internals (graceful fallback if dotnet unavailable)
+        cluster_internals = resolve_clusters(str(input_path), components)
+
+        result = generate_output(
+            components, outputs, groups,
+            filename=input_path.name,
+            cluster_internals=cluster_internals
+        )
 
         if args.stdout:
             print(result)
