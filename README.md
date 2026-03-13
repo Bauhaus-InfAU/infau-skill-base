@@ -21,7 +21,8 @@ gh auth login
 
 ```
 /plugin install research@infau-skills
-/plugin install data@infau-skills
+/plugin install docs@infau-skills
+/plugin install grasshopper@infau-skills
 ```
 
 ### For Auto-Updates (Optional)
@@ -42,8 +43,9 @@ This repository contains domain-specific plugins for Claude Code that help with 
 Research planning and problem selection framework for academic research in computational design, urban planning, and sustainable building.
 
 **Commands:**
-- `/start` - Begin research planning workflow
+- `/research-plan` - Plan research projects using scientific problem selection framework
 - `/research-question` - Improve research questions using FINER/PICO frameworks
+- `/deep-research` - Conduct comprehensive multi-source research with citation tracking
 
 **Example:**
 ```
@@ -56,17 +58,19 @@ Claude will:
 3. Ask clarifying questions one at a time
 4. Show before/after comparisons as you improve
 
-### Data (`data/`)
+### Grasshopper (`grasshopper/`)
 
-Data management and analysis workflows for SQL, visualization, dashboards, and data validation.
+Tools for working with Grasshopper (Rhino) parametric definitions.
 
 **Commands:**
-- `/analyze` - Answer data questions
-- `/explore-data` - Profile and explore datasets
-- `/write-query` - Write optimized SQL
-- `/create-viz` - Create publication-quality visualizations
-- `/build-dashboard` - Build interactive HTML dashboards
-- `/validate` - QA analyses before sharing
+- `/ghx-to-llm` - Convert GHX files to LLM-readable markdown with cluster resolution and letter-based cross-referencing
+
+### Docs (`docs/`)
+
+Document processing and conversion workflows.
+
+**Commands:**
+- `/pdf-to-md` - Convert PDF files to Markdown using Docling
 
 ## Structure
 
@@ -78,19 +82,26 @@ skill-base/
 ├── research/                         # Research domain plugin
 │   ├── .claude-plugin/
 │   ├── commands/
-│   │   ├── start.md
-│   │   └── research-question.md
-│   ├── skills/
-│   │   ├── research-question/
-│   │   │   ├── SKILL.md
-│   │   │   ├── references/
-│   │   │   └── examples/
-│   │   └── scientific-problem-selection/
-│   └── README.md
-├── data/                             # Data domain plugin
+│   │   ├── research-plan.md
+│   │   ├── research-question.md
+│   │   └── deep-research.md
+│   └── skills/
+│       ├── research-question/
+│       ├── scientific-problem-selection/
+│       └── deep-research/
+├── grasshopper/                      # Grasshopper domain plugin
 │   ├── .claude-plugin/
 │   ├── commands/
+│   │   └── ghx-to-llm.md
 │   └── skills/
+│       └── ghx-to-llm/
+├── docs/                             # Document processing plugin
+│   ├── .claude-plugin/
+│   ├── commands/
+│   │   └── pdf-to-md.md
+│   └── skills/
+│       ├── pdf/
+│       └── pdf-to-md/
 ├── _templates/                       # Templates for new skills
 ├── CLAUDE.md
 ├── CONTRIBUTING.md
