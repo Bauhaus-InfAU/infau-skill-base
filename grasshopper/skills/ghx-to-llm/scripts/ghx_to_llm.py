@@ -99,6 +99,7 @@ class Component:
     value: Optional[str] = None
     x: float = 0.0
     y: float = 0.0
+    lib_guid: str = ""
 
 
 @dataclass
@@ -106,6 +107,17 @@ class Group:
     instance_guid: str
     nick_name: str
     member_guids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class PluginInfo:
+    name: str
+    version: str
+    author: str
+    assembly_name: str = ""
+    assembly_version: str = ""
+    lib_id: str = ""
+    component_count: int = 0
 
 
 def get_item_value(parent: ET.Element, name: str, default: str = "") -> str:
@@ -165,7 +177,114 @@ def extract_slider_value(container: ET.Element) -> Optional[str]:
     return None
 
 
-def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str, int]], list[Group]]:
+NULL_GUID = "00000000-0000-0000-0000-000000000000"
+
+
+def parse_libraries(root: ET.Element) -> dict[str, PluginInfo]:
+    """
+    Parse the GHALibraries section and return non-core plugins.
+
+    Returns dict keyed by library GUID (or assembly name for null-GUID extensions).
+    """
+    plugins: dict[str, PluginInfo] = {}
+
+    for chunk in root.iter("chunk"):
+        if chunk.get("name") != "GHALibraries":
+            continue
+        chunks_elem = chunk.find("chunks")
+        if chunks_elem is None:
+            break
+
+        for lib_chunk in chunks_elem.findall("chunk[@name='Library']"):
+            lib_items = lib_chunk.find("items")
+            if lib_items is None:
+                continue
+
+            lib_id = get_item_value(lib_items, "Id")
+            name = get_item_value(lib_items, "Name")
+            version = get_item_value(lib_items, "Version")
+            author = get_item_value(lib_items, "Author")
+            assembly_name = get_item_value(lib_items, "AssemblyFullName")
+            assembly_version = get_item_value(lib_items, "AssemblyVersion")
+
+            # Skip core Grasshopper entries (null GUID + Name="Grasshopper")
+            if lib_id == NULL_GUID and name == "Grasshopper":
+                continue
+
+            # Built-in extension (null GUID but has AssemblyFullName, e.g. GhPython)
+            # Use assembly name as display name since Name is often empty
+            if lib_id == NULL_GUID:
+                if not assembly_name:
+                    continue
+                display_name = assembly_name.split(",")[0].strip()
+                key = f"builtin:{display_name}"
+            else:
+                display_name = name
+                key = lib_id
+
+            if key in plugins:
+                continue
+
+            plugins[key] = PluginInfo(
+                name=display_name,
+                version=version or assembly_version,
+                author=author,
+                assembly_name=assembly_name,
+                assembly_version=assembly_version,
+                lib_id=lib_id,
+            )
+        break
+
+    return plugins
+
+
+def detect_ghpython_plugins(
+    components: dict[str, Component],
+    plugins: dict[str, PluginInfo],
+) -> None:
+    """
+    Detect GhPython-based plugins (UserObjects) by component name prefix.
+
+    GhPython UserObjects like Ladybug and Honeybee follow the naming pattern
+    ``Prefix_ComponentName`` and have ``lib_guid == NULL_GUID``.  Core
+    Grasshopper components have an *empty* lib_guid (no Lib item in XML).
+    This distinction lets us group them into synthetic plugin entries.
+    """
+    # Collect null-GUID components and group by underscore prefix
+    prefix_counts: dict[str, int] = {}
+    total_null_guid = 0
+
+    for comp in components.values():
+        if comp.lib_guid != NULL_GUID:
+            continue
+        total_null_guid += 1
+        if "_" in comp.type_name:
+            prefix = comp.type_name.split("_", 1)[0]
+            prefix_counts[prefix] = prefix_counts.get(prefix, 0) + 1
+
+    accounted = sum(prefix_counts.values())
+
+    # Create synthetic plugin entries for each prefix
+    for prefix, count in prefix_counts.items():
+        key = f"ghpython:{prefix}"
+        plugins[key] = PluginInfo(
+            name=prefix,
+            version="(GhPython)",
+            author="",
+            component_count=count,
+        )
+
+    # Remove or adjust the builtin:GhPython entry
+    ghpython_key = "builtin:GhPython"
+    if ghpython_key in plugins:
+        remaining = total_null_guid - accounted
+        if remaining <= 0:
+            del plugins[ghpython_key]
+        else:
+            plugins[ghpython_key].component_count = remaining
+
+
+def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str, int]], list[Group], dict[str, PluginInfo]]:
     """
     Parse a GHX file and build lookup structures.
 
@@ -173,9 +292,12 @@ def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str
         components: dict mapping InstanceGuid -> Component
         outputs:    dict mapping output InstanceGuid -> (component_guid, output_index)
         groups:     list of Group objects
+        plugins:    dict mapping library key -> PluginInfo (with component counts)
     """
     tree = ET.parse(file_path)
     root = tree.getroot()
+
+    plugins = parse_libraries(root)
 
     components: dict[str, Component] = {}
     outputs: dict[str, tuple[str, int]] = {}
@@ -193,6 +315,7 @@ def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str
                     continue
 
                 type_name = get_item_value(items, "Name")
+                lib_guid = get_item_value(items, "Lib")
                 container = obj_chunk.find(".//chunk[@name='Container']")
                 if container is None:
                     continue
@@ -217,7 +340,8 @@ def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str
                 comp = Component(
                     instance_guid=instance_guid,
                     type_name=type_name,
-                    nick_name=nick_name
+                    nick_name=nick_name,
+                    lib_guid=lib_guid
                 )
 
                 # Extract X,Y position from Attributes/Pivot or Bounds
@@ -255,7 +379,8 @@ def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str
                         instance_guid=instance_guid,
                         type_name="Cluster",
                         nick_name=nick_name,
-                        value=description if description else None
+                        value=description if description else None,
+                        lib_guid=lib_guid
                     )
                     # Extract position
                     attributes = container.find(".//chunk[@name='Attributes']")
@@ -467,7 +592,14 @@ def parse_ghx(file_path: str) -> tuple[dict[str, Component], dict[str, tuple[str
 
                 components[instance_guid] = comp
 
-    return components, outputs, groups
+    # Count components per plugin (only for non-null GUIDs to avoid misattribution)
+    for comp in components.values():
+        if comp.lib_guid and comp.lib_guid != NULL_GUID and comp.lib_guid in plugins:
+            plugins[comp.lib_guid].component_count += 1
+
+    detect_ghpython_plugins(components, plugins)
+
+    return components, outputs, groups, plugins
 
 
 def build_global_id_map(
@@ -602,7 +734,7 @@ def resolve_clusters(
                 continue
 
             try:
-                cluster_comps, cluster_outputs, cluster_groups = parse_ghx(str(cluster_ghx))
+                cluster_comps, cluster_outputs, cluster_groups, _ = parse_ghx(str(cluster_ghx))
                 comp = components.get(guid)
                 nick = comp.nick_name if comp else guid
                 desc = comp.value if comp else ""
@@ -796,7 +928,8 @@ def generate_output(
     outputs: dict[str, tuple[str, int]],
     groups: list[Group],
     filename: str = "",
-    cluster_internals: dict[str, ClusterInternals] | None = None
+    cluster_internals: dict[str, ClusterInternals] | None = None,
+    plugins: dict[str, PluginInfo] | None = None
 ) -> str:
     """Generate the compact LLM-readable text output."""
     lines = []
@@ -1160,6 +1293,21 @@ def generate_output(
     if cluster_count > 0:
         stats_parts.append(f"Clusters: {cluster_count}")
 
+    # =========================================================================
+    # 8b. Plugins section (rendered after stats, before groups)
+    # =========================================================================
+    plugin_lines: list[str] = []
+    if plugins:
+        sorted_plugins = sorted(plugins.values(), key=lambda p: p.name.lower())
+        if sorted_plugins:
+            plugin_lines.append("## Plugins")
+            plugin_lines.append("| Plugin | Version | Components |")
+            plugin_lines.append("|--------|---------|------------|")
+            for p in sorted_plugins:
+                count_str = str(p.component_count) if p.component_count > 0 else "-"
+                plugin_lines.append(f"| {p.name} | {p.version} | {count_str} |")
+            plugin_lines.append("")
+
     header_lines = [
         f"# Grasshopper Definition: {filename}" if filename else "# Grasshopper Definition",
         "",
@@ -1177,7 +1325,7 @@ def generate_output(
         "",
     ]
 
-    return "\n".join(header_lines + lines)
+    return "\n".join(header_lines + plugin_lines + lines)
 
 
 def main():
@@ -1199,7 +1347,7 @@ def main():
         print(f"Warning: File does not have .ghx extension: {input_path}", file=sys.stderr)
 
     try:
-        components, outputs, groups = parse_ghx(str(input_path))
+        components, outputs, groups, plugins = parse_ghx(str(input_path))
 
         # Resolve cluster internals (graceful fallback if dotnet unavailable)
         cluster_internals = resolve_clusters(str(input_path), components)
@@ -1207,7 +1355,8 @@ def main():
         result = generate_output(
             components, outputs, groups,
             filename=input_path.name,
-            cluster_internals=cluster_internals
+            cluster_internals=cluster_internals,
+            plugins=plugins
         )
 
         if args.stdout:
