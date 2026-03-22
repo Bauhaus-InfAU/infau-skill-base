@@ -22,8 +22,8 @@ Convert Grasshopper `.ghx` files into LLM-readable markdown documentation and se
 Invoke the `ghx-to-llm` skill to process `$ARGUMENTS`.
 
 The skill runs in two phases:
-1. **Phase 1 (Automated):** Run the Python converter script to produce `{name}_ghx-to-llm.md`
-2. **Phase 2 (LLM):** Analyze the conversion output and create `{name}_ghx-summary.md`
+1. **Phase 1 (Automated):** Run the Python converter script to produce `{name}_Definition.md`
+2. **Phase 2 (LLM):** Analyze the conversion output and create `{name}_Summary.md`
 
 Both output files are saved alongside the input `.ghx` file.
 
@@ -33,11 +33,11 @@ Both output files are saved alongside the input `.ghx` file.
 ```
 /ghx-to-llm /path/to/Definition.ghx
 ```
-Creates `Definition_ghx-to-llm.md` and `Definition_ghx-summary.md`
+Creates `Definition_Definition.md` and `Definition_Summary.md`
 
 **Convert with custom output:**
 ```
-/ghx-to-llm /path/to/Definition.ghx --output /docs/Definition_ghx-to-llm.md
+/ghx-to-llm /path/to/Definition.ghx --output /docs/Definition_Definition.md
 ```
 
 ## Tips
