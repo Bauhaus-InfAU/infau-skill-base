@@ -79,14 +79,6 @@ def extract_prompt(filepath):
     return text.split("\n\n", 1)[-1].strip()
 
 
-def load_design_concept(project_dir):
-    """Read context/_design_concept.md if it exists, return content or None."""
-    concept_path = project_dir / "context" / "_design_concept.md"
-    if concept_path.exists():
-        return concept_path.read_text(encoding="utf-8").strip()
-    return None
-
-
 def find_style_references(project_dir):
     """List .png/.jpg/.jpeg files in references/styles/, sorted."""
     styles_dir = project_dir / "references" / "styles"
@@ -112,7 +104,6 @@ def generate_image(
     prompt_id,
     style_references,
     starter_image,
-    design_concept,
     model,
     aspect_ratio,
     image_size,
@@ -129,14 +120,12 @@ def generate_image(
     # Build content payload
     has_styles = bool(style_references)
     has_starter = starter_image is not None
-    has_concept = design_concept is not None
     json_prompt = is_json_prompt(prompt_text)
 
     style_instruction = (
         "Use the visual style of the reference image(s) above "
         "(materials, lighting, color palette, level of abstraction).\n\n"
     )
-    concept_text = f"Follow this visual style guide:\n\n{design_concept}\n\n" if has_concept else ""
 
     if json_prompt:
         if has_starter:
@@ -149,7 +138,7 @@ def generate_image(
         else:
             generate_instruction = "Generate a new image with this description:\n\n"
 
-    prompt_payload = concept_text + generate_instruction + prompt_text
+    prompt_payload = generate_instruction + prompt_text
 
     if has_styles:
         style_imgs = [PILImage.open(str(ref)) for ref in style_references]
@@ -171,8 +160,6 @@ def generate_image(
             starter_img,
             prompt_payload,
         ]
-    elif has_concept:
-        contents = prompt_payload
     else:
         contents = prompt_text
 
@@ -277,12 +264,6 @@ def main():
         "--starter",
         help="Use a specific starter image filename from starters/",
     )
-    parser.add_argument(
-        "--no-concept",
-        action="store_true",
-        help="Skip prepending design concept to prompts",
-    )
-
     args = parser.parse_args()
 
     # Resolve project
@@ -317,11 +298,6 @@ def main():
     else:
         prompt_ids = list(prompts.keys())
 
-    # Load design concept
-    design_concept = None
-    if not args.no_concept:
-        design_concept = load_design_concept(project_dir)
-
     # Select style references
     style_references = []
     if args.style:
@@ -355,8 +331,6 @@ def main():
         print(f"Style references: {len(style_references)} image(s)")
     if starter_image:
         print(f"Starter: {starter_image.name}")
-    if design_concept:
-        print(f"Design concept: loaded")
     print(f"Prompts: {', '.join(prompt_ids)}")
     print()
 
@@ -373,7 +347,6 @@ def main():
             prompt_id=prompt_id,
             style_references=style_references,
             starter_image=starter_image,
-            design_concept=design_concept,
             model=args.model,
             aspect_ratio=args.aspect_ratio,
             image_size=args.image_size,

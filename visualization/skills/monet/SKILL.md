@@ -37,7 +37,7 @@ If no API key, tell the user:
 Check for an existing `monet/` directory in the current working directory.
 
 **If `monet/` exists:**
-1. Read all files in `monet/context/` — this is the project's knowledge base. It contains source documents the user has added (architecture specs, research notes, briefs, technical descriptions) that inform prompt writing. `_design_concept.md` is a special file defining visual style; everything else is source material Claude should use when drafting prompts.
+1. Read all files in `monet/context/` — this is the project's knowledge base. It contains source documents the user has added (architecture specs, research notes, briefs, technical descriptions, visual identity guides) that inform prompt writing.
 2. View images in `monet/references/types/` — understand what kind of images this project produces
 3. View images in `monet/references/styles/` — understand the target aesthetic
 4. Check `monet/starters/` for base images
@@ -61,18 +61,8 @@ Then help the user set up:
 - Tell the user to add any source documents to `monet/context/` — architecture specs, research notes, briefs, technical descriptions, anything Claude should read to write informed prompts
 - These files are Claude's reference material, not sent to Gemini
 
-**Visual identity:**
-1. **Ask about the project purpose**: What images are these for? (paper, thesis, presentation, website)
-2. **Ask about image type**: What kind of images? (physical models, exterior photos, interior renders, diagrams, drawings)
-3. **Ask about aesthetic**: What visual style? (photorealistic, miniature models, watercolor, flat illustration, technical drawing)
-4. **Ask about materials/palette**: What materials or colors define the visual language?
-5. **Ask about camera**: What perspective? (isometric, eye-level, bird's eye, section cut)
-6. **Ask about constraints**: What should never appear? (no text, no people, no gradients, etc.)
-
-Based on answers, draft a `monet/context/_design_concept.md` file. See `examples/design-concept.md` for a worked example of what this looks like.
-
 Remind the user to:
-- Add source documents to `monet/context/` for Claude to read when writing prompts
+- Add source documents to `monet/context/` for Claude to read when writing prompts (specs, briefs, visual identity notes, research)
 - Drop style reference images into `monet/references/styles/`
 - Drop type reference images into `monet/references/types/` (optional)
 - Drop starter images into `monet/starters/` (optional)
@@ -152,7 +142,6 @@ python scripts/generate.py <project-dir> [prompt_ids...] [options]
 - `--image-size SIZE` — Override (default: 2K)
 - `--style FILE` — Use specific style reference from references/styles/
 - `--starter FILE` — Use specific starter image from starters/
-- `--no-concept` — Skip prepending design concept
 
 ## Principles
 
@@ -165,14 +154,13 @@ All changes accumulate in the JSON prompt. Every generation is fresh from clean 
 ### Ask Before Assuming
 When drafting prompts, show the draft and ask for approval. When the user says "change the lighting," confirm which fields before editing.
 
-### Design Concept Consistency
-The `_design_concept.md` file ensures visual consistency across all images. When authoring new prompts, respect the established visual language.
+### Use Context Documents
+Read the user's source documents in `context/` before writing prompts. The better you understand the subject, the better the prompt.
 
 ## References
 
 - See `references/workflow.md` for iteration methodology, conventions, and CLI details
 - See `references/json-schemas.md` for JSON prompt templates (5 scene types)
-- See `examples/design-concept.md` for a worked example of visual identity definition
 - See `examples/prompt-examples.md` for JSON and narrative prompt examples
 
 ## Boundaries
@@ -182,5 +170,5 @@ This skill should NOT:
 - Use a previously generated image as input for the next generation
 - Modify style/type reference images
 - Skip showing generated results to the user
-- Assume image aesthetic without reading the design concept
+- Write prompts without reading context documents first
 - Create prompts without user approval of the draft

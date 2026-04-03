@@ -24,8 +24,7 @@ When `/monet` scaffolds a project, it creates:
 ```
 monet/
 ├── context/                    # Knowledge base — source docs Claude reads to write prompts
-│   ├── _design_concept.md     # Visual identity guide (auto-prepended to all prompts)
-│   └── *.md                   # User-provided source material (specs, briefs, research notes)
+│   └── *.md                   # User-provided source material (specs, briefs, visual identity, research)
 ├── references/
 │   ├── types/                 # WHAT to generate — Claude analyzes, NOT sent to Gemini
 │   │   └── *.jpg/png
@@ -52,7 +51,6 @@ monet/
 - The `## Prompt` section can contain **narrative text** or **JSON** — auto-detected by `generate.py`
 - Files prefixed with `_` are skipped by the discovery system
 - Each prompt file should also have a `## Concept` section explaining the image's purpose
-- `context/_design_concept.md` content is auto-prepended to all prompts unless `--no-concept` is used
 
 ## CLI Reference
 
@@ -70,7 +68,6 @@ Options:
   --image-size SIZE    Override image size (default: 2K)
   --style FILE         Use a specific style reference from references/styles/
   --starter FILE       Use a specific starter image from starters/
-  --no-concept         Skip prepending design concept
 ```
 
 ## Generation Rules
