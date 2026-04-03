@@ -10,21 +10,39 @@ This is a Claude Code skill repository for the InfAU chair (Informatik in der Ar
 
 ```
 skill-base/
-├── .claude-plugin/              # Root plugin manifest
-├── research/                    # Research domain plugin
+├── .claude-plugin/                   # Root plugin manifest + marketplace
+│   ├── plugin.json
+│   └── marketplace.json
+├── research/                         # Research domain plugin
 │   ├── .claude-plugin/
 │   ├── commands/
 │   │   ├── research-plan.md
-│   │   └── research-question.md
-│   ├── skills/
-│   │   ├── research-question/
-│   │   └── scientific-problem-selection/
-│   └── README.md
-├── data/                        # Data domain plugin
+│   │   ├── research-question.md
+│   │   └── deep-research.md
+│   └── skills/
+│       ├── research-question/
+│       ├── scientific-problem-selection/
+│       └── deep-research/
+├── docs/                             # Document processing plugin
 │   ├── .claude-plugin/
 │   ├── commands/
+│   │   └── pdf-to-md.md
 │   └── skills/
-├── _templates/                  # Templates for creating new skills
+│       ├── pdf/
+│       └── pdf-to-md/
+├── grasshopper/                      # Grasshopper/Rhino plugin
+│   ├── .claude-plugin/
+│   ├── commands/
+│   │   └── ghx-to-llm.md
+│   └── skills/
+│       └── ghx-to-llm/
+├── visualization/                    # AI image generation plugin
+│   ├── .claude-plugin/
+│   ├── commands/
+│   │   └── monet.md
+│   └── skills/
+│       └── monet/
+├── _templates/                       # Templates for creating new skills
 ├── CLAUDE.md
 ├── CONTRIBUTING.md
 └── README.md
@@ -57,3 +75,13 @@ Commands in `domain/commands/` are markdown files where:
 ### Research Domain
 - `/research-plan [topic]` - Plan research projects using scientific problem selection framework
 - `/research-question [question]` - Improve research questions using FINER/PICO frameworks
+- `/deep-research [topic]` - Conduct comprehensive multi-source research with citation tracking
+
+### Docs Domain
+- `/pdf-to-md [file]` - Convert PDF files to Markdown using Docling
+
+### Grasshopper Domain
+- `/ghx-to-llm [file]` - Convert GHX files to LLM-readable markdown with cluster resolution
+
+### Visualization Domain
+- `/monet [prompt-id|new|--list]` - Generate architecture-focused images using Google Gemini

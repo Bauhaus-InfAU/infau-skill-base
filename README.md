@@ -23,6 +23,7 @@ gh auth login
 /plugin install research@infau-skills
 /plugin install docs@infau-skills
 /plugin install grasshopper@infau-skills
+/plugin install visualization@infau-skills
 ```
 
 ### For Auto-Updates (Optional)
@@ -65,6 +66,24 @@ Tools for working with Grasshopper (Rhino) parametric definitions.
 **Commands:**
 - `/ghx-to-llm` - Convert GHX files to LLM-readable markdown with cluster resolution and letter-based cross-referencing
 
+### Visualization (`visualization/`)
+
+AI image generation for architecture using Google Gemini.
+
+**Commands:**
+- `/monet` - Generate architecture-focused images with structured prompts and style references
+
+**Example:**
+```
+/monet new
+```
+
+Claude will:
+1. Scaffold a `monet/` directory with context, references, prompts, and results folders
+2. Read your project context and style references
+3. Author structured prompts (JSON or narrative)
+4. Generate images via Gemini and auto-version results
+
 ### Docs (`docs/`)
 
 Document processing and conversion workflows.
@@ -95,6 +114,12 @@ skill-base/
 │   │   └── ghx-to-llm.md
 │   └── skills/
 │       └── ghx-to-llm/
+├── visualization/                    # AI image generation plugin
+│   ├── .claude-plugin/
+│   ├── commands/
+│   │   └── monet.md
+│   └── skills/
+│       └── monet/
 ├── docs/                             # Document processing plugin
 │   ├── .claude-plugin/
 │   ├── commands/
