@@ -23,9 +23,9 @@ When `/monet` scaffolds a project, it creates:
 
 ```
 monet/
-├── context/                    # Project documentation
+├── context/                    # Knowledge base — source docs Claude reads to write prompts
 │   ├── _design_concept.md     # Visual identity guide (auto-prepended to all prompts)
-│   └── *.md                   # Brief, constraints, materials, etc.
+│   └── *.md                   # User-provided source material (specs, briefs, research notes)
 ├── references/
 │   ├── types/                 # WHAT to generate — Claude analyzes, NOT sent to Gemini
 │   │   └── *.jpg/png

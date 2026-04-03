@@ -63,6 +63,7 @@ Runs generation for `monet/prompts/facade_study.md`
 
 ## Tips
 
+- Add source documents (specs, briefs, research notes) to `monet/context/` — Claude reads them to write informed prompts
 - JSON prompts are preferred for precise iteration — each field can be independently modified
 - The `_design_concept.md` in context/ is auto-prepended to all prompts as a style guide
 - Style references in `references/styles/` are sent to Gemini as visual anchors

@@ -37,7 +37,7 @@ If no API key, tell the user:
 Check for an existing `monet/` directory in the current working directory.
 
 **If `monet/` exists:**
-1. Read all files in `monet/context/` — understand the project brief, constraints, visual identity
+1. Read all files in `monet/context/` — this is the project's knowledge base. It contains source documents the user has added (architecture specs, research notes, briefs, technical descriptions) that inform prompt writing. `_design_concept.md` is a special file defining visual style; everything else is source material Claude should use when drafting prompts.
 2. View images in `monet/references/types/` — understand what kind of images this project produces
 3. View images in `monet/references/styles/` — understand the target aesthetic
 4. Check `monet/starters/` for base images
@@ -55,8 +55,13 @@ Create the `monet/` directory with standard structure:
 mkdir -p monet/{context,references/types,references/styles,starters,prompts,results}
 ```
 
-Then help the user define the visual identity:
+Then help the user set up:
 
+**Context (knowledge base):**
+- Tell the user to add any source documents to `monet/context/` — architecture specs, research notes, briefs, technical descriptions, anything Claude should read to write informed prompts
+- These files are Claude's reference material, not sent to Gemini
+
+**Visual identity:**
 1. **Ask about the project purpose**: What images are these for? (paper, thesis, presentation, website)
 2. **Ask about image type**: What kind of images? (physical models, exterior photos, interior renders, diagrams, drawings)
 3. **Ask about aesthetic**: What visual style? (photorealistic, miniature models, watercolor, flat illustration, technical drawing)
@@ -67,15 +72,17 @@ Then help the user define the visual identity:
 Based on answers, draft a `monet/context/_design_concept.md` file. See `examples/design-concept.md` for a worked example of what this looks like.
 
 Remind the user to:
+- Add source documents to `monet/context/` for Claude to read when writing prompts
 - Drop style reference images into `monet/references/styles/`
 - Drop type reference images into `monet/references/types/` (optional)
 - Drop starter images into `monet/starters/` (optional)
 
 ### Phase 3: Author Prompts
 
-1. Read 1-2 existing prompts in `monet/prompts/` (if any) for tone and detail calibration
-2. Ask the user what they want to visualize — the **image concept**
-3. If starters exist in `monet/starters/`, ask if they want to transform one
+1. Read all files in `monet/context/` — absorb the source material the user has provided (specs, notes, briefs). Use this knowledge to write accurate, informed prompts.
+2. Read 1-2 existing prompts in `monet/prompts/` (if any) for tone and detail calibration
+3. Ask the user what they want to visualize — the **image concept**
+4. If starters exist in `monet/starters/`, ask if they want to transform one
 
 **Drafting the prompt:**
 
