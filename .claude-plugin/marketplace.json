@@ -29,6 +29,13 @@
       "description": "Grasshopper/Rhino tools — convert GHX definitions to LLM-readable markdown and RAG summaries",
       "version": "1.0.0",
       "keywords": ["grasshopper", "rhino", "ghx", "3d-modeling"]
+    },
+    {
+      "name": "visualization",
+      "source": "./visualization",
+      "description": "AI image generation tools — architecture-focused visualization using Google Gemini (nano-banana)",
+      "version": "1.0.0",
+      "keywords": ["visualization", "image-generation", "gemini", "architecture", "monet", "nano-banana"]
     }
   ]
 }
