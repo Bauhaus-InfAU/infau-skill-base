@@ -813,7 +813,7 @@ def format_component(
             ]
             if inp_refs:
                 return f'{{{comp_id}}} Panel{nick}[{",".join(inp_refs)}→{comp_id}.1]=({comp_id}.1)'
-            val = comp.value[:50] + "..." if len(comp.value) > 50 else comp.value
+            val = comp.value[:1000] + "..." if len(comp.value) > 1000 else comp.value
             return f'{{{comp_id}}} Panel{nick}[→{comp_id}.1]=({val.replace(chr(10), chr(92)+"n")})'
 
         if comp.type_name == "Number Slider":
@@ -1334,7 +1334,7 @@ def main():
         description="Convert Grasshopper GHX files to LLM-readable format"
     )
     parser.add_argument("input", help="Input GHX file path")
-    parser.add_argument("-o", "--output", help="Output file path (default: <input>_ghx-to-llm.md)")
+    parser.add_argument("-o", "--output", help="Output file path (default: <input>_Definition.md)")
     parser.add_argument("--stdout", action="store_true", help="Print to stdout instead of file")
 
     args = parser.parse_args()
@@ -1363,7 +1363,7 @@ def main():
             print(result)
         else:
             output_path = Path(args.output) if args.output else \
-                input_path.parent / (input_path.stem + "_ghx-to-llm.md")
+                input_path.parent / (input_path.stem + "_Definition.md")
             output_path.write_text(result, encoding="utf-8")
             print(f"Output written to: {output_path}")
             print(f"Components: {len(components)}, Groups: {len(groups)}")

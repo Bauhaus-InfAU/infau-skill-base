@@ -11,8 +11,8 @@ Convert Grasshopper `.ghx` files into two complementary outputs for LLM understa
 ## How to Use This Skill
 
 1. User provides path to `.ghx` file
-2. Run Python converter script → creates `{name}_ghx-to-llm.md`
-3. Analyze conversion output → create `{name}_ghx-summary.md`
+2. Run Python converter script → creates `{name}_Definition.md`
+3. Analyze conversion output → create `{name}_Summary.md`
 4. Both files saved to same folder as input
 
 ## When to Use This Skill
@@ -30,25 +30,25 @@ Convert Grasshopper `.ghx` files into two complementary outputs for LLM understa
 
 **Script options:**
 - `input` - Path to .ghx file (required)
-- `-o, --output` - Custom output path (default: `{input}_ghx-to-llm.md`)
+- `-o, --output` - Custom output path (default: `{input}_Definition.md`)
 - `--stdout` - Print to console instead of file
 
 ## Output Files
 
 | Input | Output 1 (Phase 1) | Output 2 (Phase 2) |
 |-------|--------------------|--------------------|
-| `Task_01.ghx` | `Task_01_ghx-to-llm.md` | `Task_01_ghx-summary.md` |
+| `Task_01.ghx` | `Task_01_Definition.md` | `Task_01_Summary.md` |
 
 ## Example Workflow
 
 ```bash
 # Phase 1: Convert (from skill folder)
 python .claude/skills/ghx-to-llm/scripts/ghx_to_llm.py "path/to/Definition.ghx"
-# Output: path/to/Definition_ghx-to-llm.md
+# Output: path/to/Definition_Definition.md
 
 # Phase 2: Summarize (LLM reads conversion, writes summary)
-# Read the _ghx-to-llm.md file
-# Create: path/to/Definition_ghx-summary.md
+# Read the _Definition.md file
+# Create: path/to/Definition_Summary.md
 ```
 
 ## Critical Requirements
@@ -82,7 +82,7 @@ The converter produces structured markdown with:
 
 ## Phase 2: Summary Structure Template
 
-After reading the `_ghx-to-llm.md` file, create a semantic summary:
+After reading the `_Definition.md` file, create a semantic summary:
 
 ```markdown
 # {Filename} - Grasshopper Definition Summary
