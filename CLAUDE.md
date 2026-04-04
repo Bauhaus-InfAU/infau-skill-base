@@ -36,7 +36,7 @@ skill-base/
 │   │   └── ghx-to-llm.md
 │   └── skills/
 │       └── ghx-to-llm/
-├── visualization/                    # AI image generation plugin
+├── monet/                            # AI image generation plugin
 │   ├── .claude-plugin/
 │   ├── commands/
 │   │   └── monet.md
@@ -83,5 +83,5 @@ Commands in `domain/commands/` are markdown files where:
 ### Grasshopper Domain
 - `/ghx-to-llm [file]` - Convert GHX files to LLM-readable markdown with cluster resolution
 
-### Visualization Domain
+### Monet Domain
 - `/monet [prompt-id|new|--list]` - Generate architecture-focused images using Google Gemini

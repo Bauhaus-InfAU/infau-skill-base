@@ -31,11 +31,11 @@
       "keywords": ["grasshopper", "rhino", "ghx", "3d-modeling"]
     },
     {
-      "name": "visualization",
-      "source": "./visualization",
+      "name": "monet",
+      "source": "./monet",
       "description": "AI image generation tools — architecture-focused visualization using Google Gemini (nano-banana)",
       "version": "1.0.0",
-      "keywords": ["visualization", "image-generation", "gemini", "architecture", "monet", "nano-banana"]
+      "keywords": ["monet", "image-generation", "gemini", "architecture", "visualization", "nano-banana"]
     }
   ]
 }
