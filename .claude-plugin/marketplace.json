@@ -36,6 +36,13 @@
       "description": "AI image generation tools — architecture-focused visualization using Googles Nano Banana)",
       "version": "1.0.0",
       "keywords": ["monet", "image-generation", "gemini", "architecture", "visualization", "nano-banana", "archviz"]
+    },
+    {
+      "name": "dienstreise",
+      "source": "./dienstreise",
+      "description": "Dienstreise-Assistent — guides BUW employees through the complete business travel process (request, cost calculation, settlement)",
+      "version": "1.0.0",
+      "keywords": ["dienstreise", "travel", "reisekosten", "DR-001", "DR-004", "BUW", "antrag", "abrechnung"]
     }
   ]
 }

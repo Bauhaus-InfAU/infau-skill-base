@@ -24,6 +24,7 @@ gh auth login
 /plugin install docs@infau-skills
 /plugin install grasshopper@infau-skills
 /plugin install monet@infau-skills
+/plugin install dienstreise@infau-skills
 ```
 
 ### For Auto-Updates (Optional)
@@ -84,6 +85,24 @@ Claude will:
 3. Author structured prompts (JSON or narrative)
 4. Generate images via Gemini and auto-version results
 
+### Dienstreise (`dienstreise/`)
+
+Business travel assistant for BUW employees — guides through the complete Dienstreise process from request to settlement.
+
+**Commands:**
+- `/dienstreise` - Interactive assistant that determines your current phase (planning or settling)
+
+**Example:**
+```
+/dienstreise antrag
+```
+
+Claude will:
+1. Ask about your trip details (destination, dates, purpose)
+2. Research hotels and train connections
+3. Create the trip folder with all required forms
+4. Fill out DR-001 (request) and DR-003 (cost calculation)
+
 ### Docs (`docs/`)
 
 Document processing and conversion workflows.
@@ -120,6 +139,12 @@ skill-base/
 │   │   └── monet.md
 │   └── skills/
 │       └── monet/
+├── dienstreise/                      # Business travel assistant plugin
+│   ├── .claude-plugin/
+│   ├── commands/
+│   │   └── dienstreise.md
+│   └── skills/
+│       └── dienstreise/
 ├── docs/                             # Document processing plugin
 │   ├── .claude-plugin/
 │   ├── commands/

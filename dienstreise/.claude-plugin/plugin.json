@@ -1,0 +1,8 @@
+{
+  "name": "dienstreise",
+  "version": "1.0.0",
+  "description": "Dienstreise-Assistent — guides BUW employees through the complete business travel process (request, cost calculation, settlement)",
+  "author": {
+    "name": "InfAU - Bauhaus-Universität Weimar"
+  }
+}

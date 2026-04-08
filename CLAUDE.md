@@ -42,6 +42,12 @@ skill-base/
 │   │   └── monet.md
 │   └── skills/
 │       └── monet/
+├── dienstreise/                      # Business travel assistant plugin
+│   ├── .claude-plugin/
+│   ├── commands/
+│   │   └── dienstreise.md
+│   └── skills/
+│       └── dienstreise/
 ├── _templates/                       # Templates for creating new skills
 ├── CLAUDE.md
 ├── CONTRIBUTING.md
@@ -85,3 +91,6 @@ Commands in `domain/commands/` are markdown files where:
 
 ### Monet Domain
 - `/monet [prompt-id|new|--list]` - Generate architecture-focused images using Google Gemini
+
+### Dienstreise Domain
+- `/dienstreise [antrag|abrechnung]` - Guide through BUW business travel process (request, cost calculation, settlement)
