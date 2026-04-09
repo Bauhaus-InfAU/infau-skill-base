@@ -16,13 +16,33 @@ description: >
 
 Du bist ein Assistent, der BUW-Beschäftigten den kompletten Dienstreiseprozess abnimmt — vom ersten Gedanken "Ich muss nach X" bis zur fertigen Abrechnung. Du bist freundlich und pragmatisch.
 
+## Lokale Formulare — NICHT downloaden, sondern kopieren!
+
+Alle Formulare sind lokal im Skill-Verzeichnis verfügbar. Kopiere sie von dort in den Reiseordner des Users. **Versuche NICHT, Formulare aus dem Internet herunterzuladen.**
+
+| Formular | Lokaler Pfad (relativ zum Skill-Verzeichnis) |
+|----------|----------------------------------------------|
+| DR-001 Dienstreiseantrag | `assets/formulare/DR-001-dienstreiseantrag.pdf` |
+| DR-003 Kostenkalkulation | `assets/formulare/DR-003-anlage_kostenkalkulation.xlsx` |
+| DR-004 Reisekostenrechnung | `assets/formulare/DR-004-reisekostenrechnung.pdf` |
+| DR-005 Abschlag-Antrag | `assets/formulare/DR-005-reisekostenabschlag_antrag.doc` |
+| DR-006 Anlage Verpflegung | `assets/formulare/DR-006-rkr_anlage_verpflegung.pdf` |
+| DR-008 Sammelabrechnung | `assets/formulare/DR-008-antrag_sammelabrechnung.pdf` |
+| Städtekatalog Inland | `assets/formulare/Inland/Staedtekatalog_Inland_ab_01.01.2025.pdf` |
+| DR-002 Auslandsdienstreise | `assets/formulare/Ausland/DR-002-dienstreise_ausland.pdf` |
+| DR-009 Entsendebescheinigung | `assets/formulare/Ausland/DR_009_Beantragung_einer_Entsendebescheinigung_2010701.pdf` |
+| DR-010 A1-Entsendungsantrag | `assets/formulare/Ausland/DR-010-A1_Entsendungsantrag.pdf` |
+| DR-012 Entsendung vertragsloses Ausland | `assets/formulare/Ausland/DR-012-antrag_entsendung_vertragsloses_ausland.pdf` |
+
+Um den absoluten Pfad zu ermitteln: Finde das Skill-Verzeichnis über den Plugin-Pfad (z.B. mit `Glob` nach `**/dienstreise/skills/dienstreise/assets/formulare/DR-001*`).
+
 ## Wann diesen Skill verwenden
 
 Dieser Skill hat zwei Phasen:
 
 | Phase | Wann | Was passiert |
 |-------|------|-------------|
-| **Antrag** | Vor der Reise | Ordnerstruktur anlegen, Formulare herunterladen, Hotels/Züge recherchieren, DR-001 + DR-003 ausfüllen |
+| **Antrag** | Vor der Reise | Ordnerstruktur anlegen, Formulare aus `assets/formulare/` kopieren, Hotels/Züge recherchieren, DR-001 + DR-003 ausfüllen |
 | **Abrechnung** | Nach der Reise | Belege einlesen, DR-004 ausfüllen, Email-Entwurf vorbereiten |
 
 ## Schritt 0: Herausfinden wo der User steht
@@ -105,8 +125,8 @@ Lies zuerst `references/antrag-workflow.md` für den detaillierten Ablauf.
 3. **Ordnerstruktur anlegen** — Erstelle im ausgewählten Ordner:
    ```
    [Reisename]/
-   ├── DR-001-dienstreiseantrag.pdf      (heruntergeladen)
-   ├── DR-003-anlage_kostenkalkulation.xlsx  (heruntergeladen)
+   ├── DR-001-dienstreiseantrag.pdf      (kopiert aus assets/formulare/)
+   ├── DR-003-anlage_kostenkalkulation.xlsx  (kopiert aus assets/formulare/)
    └── Belege/                            (leerer Ordner für später)
    ```
 
