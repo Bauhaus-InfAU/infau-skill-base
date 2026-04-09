@@ -1,14 +1,22 @@
 # Phase 1: Dienstreiseantrag — Detaillierter Workflow
 
-## Schritt 1: Kontext erfassen
+## Schritt 1: Kontext erfassen — EINE FRAGE NACH DER ANDEREN
 
-Frage den User mit AskUserQuestion nach den wichtigsten Eckdaten. Wenn der User nur sagt "Ich muss nach Köln für eine Konferenz", frage gezielt nach:
+**WICHTIG: Stelle immer nur EINE Frage pro Nachricht.** Warte auf die Antwort, bevor du die nächste Frage stellst. Biete bei jeder Frage konkrete Optionen oder Hilfe an.
 
-1. **Was?** — Veranstaltungsname, Zweck (Konferenz, Forschungstreffen, Fortbildung, etc.)
-2. **Wo?** — Stadt, genaue Adresse wenn bekannt
-3. **Wann?** — Reisedaten (Hin und Rück), Veranstaltungszeitraum
-4. **Wie?** — Bevorzugtes Beförderungsmittel (Standard: Bahn)
-5. **Inland oder Ausland?**
+Reihenfolge:
+
+1. **Wohin?** — Frage nach Stadt/Ort. Wenn der User den Veranstaltungsnamen nennt, recherchiere Adresse und Details selbst.
+2. **Warum?** — Frage nach Reisezweck. Biete Optionen: `Konferenz | Forschungstreffen | Fortbildung | Messe | Gremiensitzung | Sonstiges`
+3. **Wann?** — Frage nach Reisedaten. Falls nur Veranstaltungszeitraum bekannt, schlage An-/Abreisezeiten vor basierend auf Zugverbindungen.
+4. **Wie?** — Beförderungsmittel. Zeige Optionen mit Hinweisen:
+   - Bahn (Standard, Deutschlandticket deckt Nahverkehr)
+   - Privat-PKW (nur mit Begründung, 0,20-0,38 EUR/km)
+   - Flug (nur über 1000 km erlaubt)
+5. **Übernachtung?** — Hotel nötig? Biete Recherche an, nenne Städtekatalog-Limit.
+6. **Sonstige Kosten?** — Tagungsgebühren, Eintritt, etc.
+
+Wenn der User bei einem Punkt unsicher ist (z.B. "ich weiß nicht welches Hotel"), wechsle in den Recherche-Modus und hilf aktiv, statt einfach zur nächsten Frage zu springen.
 
 Prüfe ob der User schon persönliche Daten hinterlegt hat. Suche nach `personal-data.md` im Workspace-Ordner (z.B. `00_Dienstreise/personal-data.md`), dann im übergeordneten Ordner. Falls nicht gefunden, frage den User und speichere die Daten automatisch in `personal-data.md` im Workspace-Ordner. Vorlage: `references/personal-data.md` im Skill-Verzeichnis.
 

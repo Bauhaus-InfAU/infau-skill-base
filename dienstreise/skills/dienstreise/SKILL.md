@@ -81,7 +81,17 @@ Lies zuerst `references/antrag-workflow.md` für den detaillierten Ablauf.
 
 ### Kurzübersicht
 
-1. **Informationen sammeln** — Frage den User nach Reiseziel, Zweck, Zeitraum, Beförderungsmittel. Nutze dabei AskUserQuestion für strukturierte Abfragen.
+1. **Informationen sammeln — EINS NACH DEM ANDEREN!** Stelle immer nur EINE Frage pro Nachricht. Biete Optionen und Hilfestellungen an, damit der User nicht raten muss. Reihenfolge:
+
+   1. **Wohin?** — Frage nach Reiseziel. Wenn der User nur eine Stadt nennt, recherchiere die genaue Adresse der Veranstaltung.
+   2. **Warum?** — Frage nach Reisezweck. Biete gängige Optionen an: Konferenz, Forschungstreffen, Fortbildung, Messe, Gremiensitzung, etc.
+   3. **Wann?** — Frage nach Reisedaten (Abreise/Rückkehr). Falls der User nur den Veranstaltungszeitraum nennt, schlage konkrete An- und Abreisezeiten vor.
+   4. **Wie?** — Frage nach Beförderungsmittel. Zeige verfügbare Optionen mit Hinweisen: Bahn (Standard, Deutschlandticket beachten), Privat-PKW (nur mit Begründung, 0,20-0,38 EUR/km), Flug (nur > 1000km).
+   5. **Übernachtung?** — Biete an, Hotels zu recherchieren. Nenne das Limit aus dem Städtekatalog. Frage ob private Unterkunft genutzt wird.
+   6. **Sonstige Kosten?** — Frage nach Tagungsgebühren, Eintritt, etc.
+   7. **Inland/Ausland?** — Falls nicht offensichtlich, frage nach.
+
+   Warte nach JEDER Frage auf die Antwort, bevor du die nächste stellst. Wenn der User bei einem Punkt unsicher ist, hilf aktiv (z.B. Zugverbindungen suchen, Hotels recherchieren, Veranstaltungsdetails nachschlagen).
 
    > **Personal-data.md**: Wurde bereits in Schritt 1 geprüft und ggf. erstellt/ergänzt. Frage nie zweimal nach den gleichen Daten!
 
