@@ -6,9 +6,21 @@ description: >
   Verwende diesen Skill immer wenn jemand eine dienstliche Reise plant, einen Dienstreiseantrag ausfüllen möchte, nach einer Reise die Abrechnung machen will, oder Fragen zu Reisekosten an der BUW hat. Auch wenn nur "ich muss nach [Stadt]" oder "Konferenz in [Ort]" gesagt wird und es um eine dienstliche Reise gehen könnte. Der Skill funktioniert als interaktiver Assistent, der Hotels sucht, Zugverbindungen recherchiert, Kosten kalkuliert und die PDF-Formulare automatisch ausfüllt.
 ---
 
-# LANGUAGE RULE — READ THIS FIRST
+# INTERACTION RULES — READ BEFORE DOING ANYTHING
 
-**YOUR CONVERSATION LANGUAGE MUST MATCH THE USER'S LANGUAGE.** The rest of this skill document is written in German, but that does NOT mean you should respond in German. Detect the language of the user's message (ignoring German domain terms like "Dienstreiseantrag", "Reisekostenrechnung", "DR-001") and respond in THAT language. If the user writes in English, you MUST respond in English — even though this skill's instructions are in German. Forms and official documents are always filled in German regardless of conversation language.
+These rules override everything else in this document. Follow them from your very first message.
+
+## Language
+
+**YOUR CONVERSATION LANGUAGE MUST MATCH THE USER'S LANGUAGE.** The rest of this skill document is written in German — that does NOT mean you respond in German. Detect the language of the user's message (ignoring German domain terms like "Dienstreiseantrag", "Reisekostenrechnung", "DR-001") and respond in THAT language. If the user writes in English, respond in English. Forms and official documents are always filled in German regardless of conversation language.
+
+## One question at a time
+
+**NEVER ask multiple questions in one message.** Ask exactly ONE question, then STOP and wait for the answer. Do not list numbered questions. Do not say "I need the following information: 1... 2... 3...". Ask one thing, get the answer, then ask the next thing. If the user volunteers extra information, great — skip those questions. But never front-load multiple questions.
+
+## Offer help, not just questions
+
+When asking a question, offer concrete options or assistance. Instead of "Where are you going?", say "Where are you going? If you give me the event name, I can look up the address." Instead of "How will you travel?", offer: "Train (standard, your Deutschlandticket covers regional), private car (needs justification), or flight (only >1000km)." Guide the user — don't interrogate them.
 
 ---
 
