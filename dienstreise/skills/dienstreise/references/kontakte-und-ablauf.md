@@ -15,7 +15,10 @@
 - **Dr. Anna Scheer** — Geschäftsführung
   - Tel.: +49 (0) 36 43 / 58 31 13
   - Email: anna.scheer@uni-weimar.de
-- **Franzi** — Bereichsweiterleitung
+### InfAU Office Management
+- **Franziska Schuchort** — Office Managerin InfAU
+  - Email: caad@architektur.uni-weimar.de
+  - **Zuständig für**: Entgegennahme und Weiterleitung von DR-Anträgen für InfAU-Mitarbeitende. Anträge an Franzi geben oder per Email senden — sie leitet an das Dekanat weiter. Bei Email-Einreichung Franzi mindestens in CC setzen.
 
 ### Fahrkartenbestellung
 - BUW-Bucher*innen (für Bahnfahrkarten, außer VMT)
@@ -38,7 +41,7 @@ Seit dem **18.03.2026** gilt die vollständig digitale Einreichung:
 1. DR-001 ausfüllen (PDF)
 2. DR-003 Kostenkalkulation ausfüllen (Excel)
 3. Beides ausdrucken, unterschreiben
-4. **An Claudia Rehm im Dekanat geben** (Geschwister-Scholl-Str. 8) — oder digital per Email
+4. **An Franziska Schuchort (InfAU Office) geben** — per Hand oder per Email an caad@architektur.uni-weimar.de. Franzi leitet den Antrag an das Dekanat (Claudia Rehm) weiter. Bei Email-Einreichung Franzi mindestens in CC setzen.
 5. Dekanat leitet an Dekan zur Genehmigung weiter
 6. **Genehmigter Antrag kommt per Email zurück** (von Claudia Rehm als Scan)
 
@@ -92,7 +95,7 @@ Mit freundlichen Grüßen
 1. ☐ DR-001 ausfüllen
 2. ☐ DR-003 Kostenkalkulation erstellen
 3. ☐ Beide Dokumente ausdrucken und unterschreiben
-4. ☐ An Dekanat (Claudia Rehm) zur Genehmigung geben
+4. ☐ An Franziska Schuchort (InfAU Office, caad@architektur.uni-weimar.de) geben — sie leitet an Dekanat weiter
 5. ☐ Auf genehmigten Antrag per Email warten
 6. ☐ Ggf. Fahrkarten über BUW-Bucher bestellen
 7. ☐ Ggf. Abschlag beantragen (ab 100 EUR, max 80%)
@@ -109,7 +112,7 @@ Mit freundlichen Grüßen
 ### Nächste Schritte — Was der Skill dem User sagen soll
 
 **Nach Antrag-Ausfüllung**:
-> "Drucke den Antrag (DR-001) und die Kostenkalkulation (DR-003) aus, unterschreibe beides und gib die Unterlagen bei **Claudia Rehm im Dekanat** ab (Geschwister-Scholl-Str. 8, Tel. 583112). Du bekommst den genehmigten Antrag dann per Email zurück — hebe diese Email gut auf, du brauchst sie für die Abrechnung!"
+> "Drucke den Antrag (DR-001) und die Kostenkalkulation (DR-003) aus, unterschreibe beides und gib die Unterlagen bei **Franziska Schuchort (InfAU Office)** ab — oder sende sie per Email an caad@architektur.uni-weimar.de. Franzi leitet alles an das Dekanat weiter. Du bekommst den genehmigten Antrag dann per Email zurück — hebe diese Email gut auf, du brauchst sie für die Abrechnung!"
 
 **Nach Abrechnung-Ausfüllung**:
 > "Unterschreibe die Reisekostenrechnung (DR-004), scanne sie als PDF, und sende alles per Email an Reisekostenabrechnung@uni-weimar.de. Ich habe dir unten einen Email-Entwurf vorbereitet. Vergiss nicht: **Originalbelege 5 Jahre aufbewahren!**"

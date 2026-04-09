@@ -41,7 +41,7 @@
       "name": "dienstreise",
       "source": "./dienstreise",
       "description": "Dienstreise-Assistent — guides BUW employees through the complete business travel process (request, cost calculation, settlement)",
-      "version": "1.4.0",
+      "version": "1.5.0",
       "keywords": ["dienstreise", "travel", "reisekosten", "DR-001", "DR-004", "BUW", "antrag", "abrechnung"]
     }
   ]

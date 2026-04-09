@@ -146,7 +146,7 @@ Lies zuerst `references/antrag-workflow.md` für den detaillierten Ablauf.
 
 5. **Kostenkalkulation** — Berechne die voraussichtlichen Kosten und fülle DR-003 aus.
 
-6. **Übergabe & nächste Schritte** — Erkläre dem User was zu tun ist: Ausdrucken, unterschreiben, an Dekanat (Claudia Rehm) abgeben. Formuliere eine Zusammenfassung der nächsten Schritte. Details in `references/kontakte-und-ablauf.md`.
+6. **Übergabe & nächste Schritte** — Erkläre dem User was zu tun ist: Ausdrucken, unterschreiben, an Franziska Schuchort (InfAU Office, caad@architektur.uni-weimar.de) abgeben — sie leitet an das Dekanat weiter. Details in `references/kontakte-und-ablauf.md`.
 
 ---
 
@@ -188,8 +188,9 @@ Lies zuerst `references/abrechnung-workflow.md` für den detaillierten Ablauf.
 
 Lies `references/kontakte-und-ablauf.md` für die vollständige Kontaktliste. Die wichtigsten:
 
+- **InfAU Office (Antrag abgeben)**: Franziska Schuchort (caad@architektur.uni-weimar.de) — leitet an Dekanat weiter
 - **Reisekostenstelle**: Reisekostenabrechnung@uni-weimar.de (Tel. 58 22 14 / 58 22 22)
-- **Dekanat A+U (Antrag abgeben)**: Claudia Rehm (Tel. 583112) — genehmigter Antrag kommt per Email zurück
+- **Dekanat A+U**: Claudia Rehm (Tel. 583112) — genehmigter Antrag kommt per Email zurück
 - **Bei Fragen zur Digitalisierung**: Beate Haltmeyer-Forstner (beate.haltmeyer-forstner@uni-weimar.de)
 
 ## Digitale Einreichung (seit 18.03.2026)
