@@ -13,10 +13,15 @@ Alle wesentlichen Änderungen am Skill werden hier dokumentiert. Format: [Semant
 - **Changelog**: Dieser Changelog — abrufbar wenn der User nach "was ist neu" oder der Version fragt.
 - **Projekt-Ordnerstruktur**: Ein übergreifender Ordner (`Dienstreisen/`) sammelt alle Reisen. `personal-data.md` wird geteilt. Dokumentiert in `references/folder-convention.md`.
 
+### Bugfix
+- **K29 war falsch als "Deutschlandticket Ja" dokumentiert** — K29 ist tatsächlich die Anlage-Checkbox "Auslandsdienstreise". Bei Inlandsreisen mit Deutschlandticket wurde fälschlich das Feld "Anlage zum Antrag auf Finanzierung einer Auslandsdienstreise" angekreuzt. Fix: Deutschlandticket nutzt K28 + Nein_7, K29/K30 gehören zur Anlage-Sektion.
+- **Anlage-Checkboxen vollständig dokumentiert** — Alle 7 Anlage-Checkboxen (K29-K35 auf Seite 1, K58-K64 auf Seite 2) sind jetzt mit korrekter Zuordnung dokumentiert: Auslandsdienstreise, Fahrauftrag, Vergleichsangebote, Abschlag, Einladung, Entsendungsantrag, Kostenkalkulation.
+
 ### Geändert
 - Phase 2 (Abrechnung) hat jetzt 7 statt 6 Schritte (neuer Schritt 3: Belege umbenennen)
 - `references/folder-convention.md` zeigt jetzt die Projekt-Ebene und die User-vs-Skill-Aufgabenteilung
 - `references/abrechnung-workflow.md` enthält neuen Schritt 2b für Beleg-Umbenennung
+- BahnCard/Deutschlandticket-Sektion in `references/form-fields-antrag.md` korrigiert (nur K27, K28, Nein_6, Nein_7)
 
 ### BUW-Regelwerk
 - Geprüft am: 2026-04-10 — keine Änderungen gegenüber v1.5.0

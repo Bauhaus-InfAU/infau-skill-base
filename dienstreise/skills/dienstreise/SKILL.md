@@ -282,9 +282,12 @@ Die Kontrollkästchen7-12 im Unterkunft-Bereich haben ANDERE Bedeutungen als die
 Für ein Hotel: K8 + K10 + K12 = `/Ja` (NICHT K7 und K10 wie vorher dokumentiert!)
 
 ### 4. Anlage-Checkboxen auf BEIDEN Seiten setzen
-Die "Anlage:"-Checkboxen am unteren Rand existieren auf beiden Seiten des PDFs. Wenn DR-003 beiliegt, müssen K35 (Seite 1) UND K64 (Seite 2) gesetzt werden.
+Die "Anlage:"-Checkboxen am unteren Rand existieren auf beiden Seiten des PDFs. Wenn DR-003 beiliegt, müssen K35 (Seite 1) UND K64 (Seite 2) gesetzt werden. Die vollständige Zuordnung aller 7 Anlage-Checkboxen steht in `references/form-fields-antrag.md`.
 
-### 5. extract_form_field_info.py hat einen Bug
+### 5. K29 ist NICHT Deutschlandticket — sondern Anlage: Auslandsdienstreise!
+K29 wurde bis v1.5.0 fälschlich als "Deutschlandticket Ja" dokumentiert. Tatsächlich ist K29 die Anlage-Checkbox "Auslandsdienstreise" (Koordinaten-Analyse: y=54, Anlage-Zeile). Das führte dazu, dass bei Inlandsreisen mit Deutschlandticket das Feld "Anlage zum Antrag auf Finanzierung einer Auslandsdienstreise" angekreuzt wurde. **Fix in v1.6.0**: Deutschlandticket wird über K28 + Nein_7 gesteuert, K29/K30 gehören zur Anlage-Sektion.
+
+### 6. extract_form_field_info.py hat einen Bug
 Das PDF-Skill-Skript `extract_form_field_info.py` crasht bei Choice-Feldern (Dropdowns). Verwende stattdessen ein eigenes pypdf-Skript zum Extrahieren der Felder.
 
 ---

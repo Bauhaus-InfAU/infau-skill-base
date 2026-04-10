@@ -181,14 +181,14 @@ Alle Felder aus der ausfüllbaren PDF `assets/formulare/DR-001-dienstreiseantrag
 | Feld-ID | Typ | Beschreibung | Quelle personal-data.md |
 |---------|-----|-------------|------------------------|
 | `Ja BC zB BCB 50 oder BC 25` | Text | BahnCard Art (z.B. "BC 50") | aus personal-data.md (leer wenn keine BC) |
-| `Nein_6` | Btn | ☑ Keine BahnCard | `/On` |
 | `Kontrollkästchen27` | Btn | ☑ BahnCard Ja | `/Ja` |
-| `Kontrollkästchen28` | Btn | ☑ BahnCard Nein | `/Ja` |
-| `Nein_7` | Btn | ☑ Kein Deutschlandticket | `/On` |
-| `Kontrollkästchen29` | Btn | ☑ Deutschlandticket Ja | `/Ja` |
-| `Kontrollkästchen30` | Btn | ☑ Deutschlandticket Nein | `/Ja` |
+| `Nein_6` | Btn | ☑ BahnCard Nein | `/On` |
+| `Kontrollkästchen28` | Btn | ☑ Deutschlandticket Ja | `/Ja` |
+| `Nein_7` | Btn | ☑ Deutschlandticket Nein | `/On` |
 
-> **Logik**: BahnCard-Status und Deutschlandticket aus personal-data.md lesen. Beispiel: BahnCard Nein → `Nein_6` = `/On`, `Kontrollkästchen28` = `/Ja`. Deutschlandticket Ja → `Kontrollkästchen29` = `/Ja`.
+> **Logik**: BahnCard-Status und Deutschlandticket aus personal-data.md lesen. Beispiel: BahnCard Nein → `Nein_6` = `/On`. Deutschlandticket Ja → `Kontrollkästchen28` = `/Ja`.
+>
+> **ACHTUNG**: In der BahnCard/Deutschlandticket-Sektion gibt es NUR K27, K28, Nein_6, Nein_7. K29 und K30 gehören NICHT hierher — sie sind Anlage-Checkboxen (Auslandsdienstreise / Vergleichsangebote)! Siehe Anlage-Checkboxen weiter unten.
 
 #### Mitfahrer
 
@@ -213,26 +213,37 @@ Die Beförderungsmittel-Tabelle hat 7 Spalten × 2 Zeilen (Hin / Rück):
 
 Alle verwenden checked_value = `/Ja`.
 
-#### PKW-Anerkennung (Kontrollkästchen31-35)
-
-| Feld-ID | Typ | Beschreibung |
-|---------|-----|-------------|
-| `Kontrollkästchen31` | Btn | Privat-Kfz: triftige Gründe Ja | `/Ja` |
-| `Kontrollkästchen32` | Btn | Privat-Kfz: triftige Gründe Nein | `/Ja` |
-| `Kontrollkästchen33` | Btn | Dienst-Kfz: angefordert Ja | `/Ja` |
-| `Kontrollkästchen34` | Btn | Dienst-Kfz: angefordert Nein | `/Ja` |
-| `Kontrollkästchen35` | Btn | **Anlage: Kostenkalkulation** (Fußzeile Seite 1) | `/Ja` |
-
 #### Anlage-Checkboxen (Fußzeile beider Seiten)
 
-Beide Seiten haben am unteren Rand identische "Anlage:"-Checkboxen. Bei Seite 1 sind es K29-K35 (Achtung: K29 = Deutschlandticket, gehört NICHT zur Anlage), bei Seite 2 K58-K64.
+Beide Seiten haben am unteren Rand identische "Anlage:"-Checkboxen in zwei Zeilen. Seite 1: K29-K35, Seite 2: K58-K64. Alle verwenden checked_value = `/Ja`.
+
+**Obere Zeile (2 Checkboxen):**
 
 | Seite 1 | Seite 2 | Beschreibung |
 |---------|---------|-------------|
-| `Kontrollkästchen33` | `Kontrollkästchen62` | Anlage: bestätigter Fahrauftrag |
-| `Kontrollkästchen35` | `Kontrollkästchen64` | Anlage: Kostenkalkulation |
+| `Kontrollkästchen29` | `Kontrollkästchen58` | Anlage zum Antrag auf Finanzierung einer **Auslandsdienstreise** |
+| `Kontrollkästchen33` | `Kontrollkästchen62` | bestätigter **Fahrauftrag** (seitens Fahrdienstleiter) |
 
-> **Wichtig**: Wenn DR-003 (Kostenkalkulation) beiliegt, IMMER K35 (Seite 1) UND K64 (Seite 2) auf `/Ja` setzen!
+**Untere Zeile (5 Checkboxen):**
+
+| Seite 1 | Seite 2 | Beschreibung |
+|---------|---------|-------------|
+| `Kontrollkästchen30` | `Kontrollkästchen59` | **Vergleichsangebote** |
+| `Kontrollkästchen31` | `Kontrollkästchen60` | Antrag auf **Abschlag** |
+| `Kontrollkästchen32` | `Kontrollkästchen61` | **Einladung** |
+| `Kontrollkästchen34` | `Kontrollkästchen63` | **Entsendungsantrag** |
+| `Kontrollkästchen35` | `Kontrollkästchen64` | **Kostenkalkulation** |
+
+> **Logik — welche Anlage-Checkboxen setzen:**
+> - **Kostenkalkulation** (K35/K64): IMMER setzen wenn DR-003 beiliegt — auf BEIDEN Seiten!
+> - **Auslandsdienstreise** (K29/K58): NUR bei Auslandsreisen setzen wenn DR-002 beiliegt. **NIEMALS bei Inlandsreisen!**
+> - **Fahrauftrag** (K33/K62): Nur wenn ein Fahrauftrag (F-001) beiliegt
+> - **Vergleichsangebote** (K30/K59): Nur wenn Vergleichsangebote (z.B. für Hotel über Städtekatalog) beiliegen
+> - **Abschlag** (K31/K60): Nur wenn ein Reisekostenabschlag (DR-005) beantragt wird
+> - **Einladung** (K32/K61): Nur wenn eine Einladung zur Veranstaltung beiliegt
+> - **Entsendungsantrag** (K34/K63): Nur bei Auslandsreisen mit Entsendung (DR-009/DR-010/DR-012)
+>
+> **BUG-WARNUNG**: K29 wurde früher fälschlich als "Deutschlandticket Ja" dokumentiert. K29 ist die Anlage-Checkbox "Auslandsdienstreise"! Deutschlandticket wird über K28 und Nein_7 gesteuert (siehe BahnCard-Sektion).
 
 ---
 
@@ -366,8 +377,7 @@ fields_page1 = {
     "Kontrollkästchen12": "/Ja",  # inkl. Frühstück: NEIN
     # BahnCard/Deutschlandticket aus personal-data.md
     "Nein_6": "/On",              # Keine BahnCard (Beispiel)
-    "Kontrollkästchen28": "/Ja",  # BahnCard Nein
-    "Kontrollkästchen29": "/Ja",  # Deutschlandticket Ja (Beispiel)
+    "Kontrollkästchen28": "/Ja",  # Deutschlandticket Ja (Beispiel)
     # Beförderungsmittel: Bahn hin + rück
     "Kontrollkästchen13": "/Ja",
     "Kontrollkästchen14": "/Ja",
