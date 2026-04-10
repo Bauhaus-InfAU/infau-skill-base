@@ -39,6 +39,17 @@ Extrahiere: Einzelpreis, Anzahl, Gesamtpreis
 ### Sonstige Belege
 ÖPNV-Tickets, Taxi-Quittungen, Parkgebühren etc.
 
+## Schritt 2b: Belege einheitlich umbenennen
+
+Nach dem Einlesen und Klassifizieren werden die Belegdateien nach einem einheitlichen Schema umbenannt. Das Schema und der genaue Ablauf sind in `references/beleg-naming.md` beschrieben.
+
+**Ablauf:**
+1. Belege klassifizieren (bereits in Schritt 2 geschehen)
+2. Neuen Dateinamen nach Schema ableiten
+3. Tabelle mit Zuordnung `alter Name → neuer Name` dem User zeigen
+4. **Erst nach expliziter Bestätigung umbenennen!**
+5. Dateien im `Belege/`-Ordner umbenennen
+
 ## Schritt 3: Abweichungen und Klärung
 
 Vergleiche die tatsächlichen Belege mit dem bewilligten Antrag. Stelle per AskUserQuestion Klärungsfragen:

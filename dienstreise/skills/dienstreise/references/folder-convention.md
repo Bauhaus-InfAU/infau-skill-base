@@ -1,6 +1,23 @@
 # Ordnerstruktur-Konvention für Dienstreisen
 
-## Empfohlene Struktur pro Reise
+## Projekt-Ordner (übergreifend)
+
+Ein einzelner Ordner sammelt **alle** Dienstreisen eines Users. Der Ordner wird beim Erstnutzer-Onboarding eingerichtet (Standard: `Dienstreisen/`). Die Datei `personal-data.md` liegt auf dieser Ebene und wird von allen Reisen geteilt.
+
+```
+Dienstreisen/                             ← Projekt-Ordner (einmal pro User)
+├── personal-data.md                      ← Persönliche Daten (einmalig, geteilt)
+├── 01_Koeln DigitalBau/                  ← Erste Reise
+│   └── ...
+├── 02_Berlin BIM World/                  ← Zweite Reise
+│   └── ...
+└── 03_Muenchen Forschungstreffen/        ← Dritte Reise
+    └── ...
+```
+
+## Struktur pro Reise
+
+Jeder Reise-Unterordner wird vom Skill automatisch angelegt. Der User muss nur die Belege in den `Belege/`-Ordner legen — alles andere erstellt und füllt der Skill.
 
 ```
 [NN]_[Zielort] [Veranstaltung]/
@@ -11,10 +28,11 @@
 ├── DR-004-reisekostenrechnung.pdf        ← Leeres Formular
 ├── DR-004-reisekostenrechnung-ausgefuellt.pdf ← Ausgefüllte Abrechnung
 ├── Belege/
-│   ├── [Bahntickets].pdf
-│   ├── [Hotelrechnung].pdf
-│   ├── [Konferenztickets].pdf
-│   └── [Sonstige Belege].pdf
+│   ├── 01_Bahn_Weimar-Koeln_74.49EUR.pdf
+│   ├── 02_Bahn_Koeln-Weimar_101.49EUR.pdf
+│   ├── 03_Hotel_PremierInn-Koeln-2N_111.87EUR.pdf
+│   ├── 04_Konferenz_DigitalBau-Tagesticket_45.00EUR.pdf
+│   └── 05_OEPNV_UBahn-Koeln_3.20EUR.pdf
 └── Formulare/                            ← Optionaler Ordner mit Blanko-Formularen
     ├── Inland/
     │   └── Staedtekatalog_Inland_*.pdf
@@ -22,11 +40,19 @@
         └── DR-002-dienstreise_ausland.pdf
 ```
 
+## Was der User tun muss vs. was der Skill macht
+
+| Wer | Was |
+|-----|-----|
+| **Skill** | Ordner anlegen, Formulare kopieren, Formulare ausfüllen, Belege umbenennen, Emails formulieren |
+| **User** | Belege (PDFs) in den `Belege/`-Ordner legen, Antrag/Abrechnung unterschreiben, Email absenden, Originalbelege 5 Jahre aufbewahren |
+
 ## Namenskonventionen
 
 - Ordnername: `[NN]_[Ort] [Veranstaltung]` — z.B. `01_Koln DigitalBau`, `02_Berlin BIM World`
 - NN = laufende Nummer im Jahr
 - Ausgefüllte Formulare: Originaldateiname + `-ausgefuellt` Suffix
+- Belege: `[NN]_[Kategorie]_[Beschreibung]_[Betrag]EUR.[ext]` — siehe `references/beleg-naming.md`
 
 ## Wie der Skill den Ordner erkennt
 

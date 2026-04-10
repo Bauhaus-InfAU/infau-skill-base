@@ -1,5 +1,8 @@
 ---
 name: dienstreise
+version: 1.6.0
+last_updated: 2026-04-10
+buw_website_checked: 2026-04-10
 description: >
   Dienstreise-Assistent der Bauhaus-Universität Weimar. Begleitet Beschäftigte durch den gesamten Dienstreise-Prozess: vom Antrag (DR-001) über die Kostenkalkulation (DR-003) bis zur Reisekostenrechnung (DR-004).
   MANDATORY TRIGGERS: Dienstreise, Dienstreiseantrag, Reisekostenrechnung, Reisekostenabrechnung, DR-Antrag, travel request, business trip, Tagegeld, Reisekosten, BUW Reise, dienstlich reisen.
@@ -9,6 +12,18 @@ description: >
 # INTERACTION RULES — READ BEFORE DOING ANYTHING
 
 These rules override everything else in this document. Follow them from your very first message.
+
+## Version anzeigen
+
+**Bei jeder Aktivierung des Skills** zeige dem User als erstes eine kurze Statuszeile mit Version und Aktualität. Format:
+
+```
+Dienstreise-Assistent v{version} | Skill aktualisiert: {last_updated} | BUW-Regelwerk geprüft: {buw_website_checked}
+```
+
+Lies die Werte aus dem Frontmatter dieses Dokuments (`version`, `last_updated`, `buw_website_checked`). Übersetze die Zeile in die Sprache des Users (z.B. auf Englisch: "Travel Assistant v1.6.0 | Skill updated: 2026-04-10 | BUW rules checked: 2026-04-10").
+
+Falls der User nach dem Changelog oder "was ist neu" fragt, lies `CHANGELOG.md` (im gleichen Verzeichnis wie diese Datei) und fasse die relevanten Einträge zusammen.
 
 ## Language
 
@@ -57,6 +72,19 @@ Dieser Skill hat zwei Phasen:
 | **Antrag** | Vor der Reise | Ordnerstruktur anlegen, Formulare aus `assets/formulare/` kopieren, Hotels/Züge recherchieren, DR-001 + DR-003 ausfüllen |
 | **Abrechnung** | Nach der Reise | Belege einlesen, DR-004 ausfüllen, Email-Entwurf vorbereiten |
 
+## Erstnutzer-Erkennung (vor allem anderen!)
+
+Prüfe als Allererstes, ob `personal-data.md` im aktuellen Arbeitsverzeichnis oder einem übergeordneten Ordner existiert.
+
+**Falls `personal-data.md` NICHT existiert** → Dies ist ein Erstnutzer. Lies `references/onboarding.md` und zeige das Onboarding. Das Onboarding:
+1. Erklärt den gesamten Prozess in einfacher Sprache (was der Agent macht, was der User tun muss)
+2. Richtet den Dienstreise-Ordner ein (fragt den User oder schlägt `Dienstreisen/` vor)
+3. Geht dann nahtlos in Schritt 1 (persönliche Daten) über
+
+**Falls `personal-data.md` existiert** → Überspringe das Onboarding, weiter mit Schritt 0.
+
+---
+
 ## Schritt 0: Herausfinden wo der User steht
 
 Frage den User, ob er:
@@ -70,13 +98,15 @@ Falls der User einen Ordner ausgewählt hat, der bereits einen bewilligten DR-An
 
 ## Schritt 1: Persönliche Daten prüfen und ergänzen
 
-Bevor du in Phase 1 oder 2 einsteigst, prüfe ob `personal-data.md` im aktuellen Arbeitsverzeichnis (oder einem übergeordneten Ordner) existiert und ob die für die aktuelle Aufgabe nötigen Daten vollständig sind.
+Bevor du in Phase 1 oder 2 einsteigst, prüfe ob die für die aktuelle Aufgabe nötigen Daten in `personal-data.md` vollständig sind.
 
-### Fall A: `personal-data.md` existiert nicht
+### Fall A: `personal-data.md` existiert nicht (Erstnutzer)
 
-Statt den User alle Felder manuell abzufragen, biete an, die Daten aus einem früheren Formular zu übernehmen:
+Wenn das Onboarding übersprungen wurde (z.B. User hat direkt `/dienstreise antrag` getippt), zeige das Onboarding jetzt nach. Siehe `references/onboarding.md`.
 
-1. Frage: *"Ich habe noch keine persönlichen Daten gespeichert. Hast du einen früheren Dienstreiseantrag (DR-001) oder eine frühere Abrechnung (DR-004) als PDF? Dann kann ich die Daten daraus übernehmen."*
+Danach biete an, die Daten aus einem früheren Formular zu übernehmen:
+
+1. Frage: *"Hast du einen früheren Dienstreiseantrag (DR-001) oder eine frühere Abrechnung (DR-004) als PDF? Dann kann ich die Daten daraus übernehmen."*
 2. Falls ja: Lies das PDF, extrahiere alle persönlichen Daten (Name, Dienstort, Fakultät, Adresse, IBAN/BIC, BahnCard, etc.) und erstelle `personal-data.md` nach der Vorlage in `references/personal-data.md`.
 3. Falls nein: Frage die Grunddaten kompakt ab (möglichst wenige Fragen, Felder gruppieren).
 
@@ -164,20 +194,22 @@ Lies zuerst `references/abrechnung-workflow.md` für den detaillierten Ablauf.
    - Messe-/Konferenztickets (Preis)
    - Sonstige Belege
 
-3. **Klärungsfragen stellen** — Frage per AskUserQuestion:
+3. **Belege umbenennen** — Benenne die Belegdateien nach dem einheitlichen Schema um. Siehe `references/beleg-naming.md` für das Schema und den genauen Ablauf. **Wichtig: Immer zuerst dem User die geplante Umbenennung als Tabelle zeigen und auf Bestätigung warten!**
+
+4. **Klärungsfragen stellen** — Frage per AskUserQuestion:
    - Welche Kosten hat der User selbst bezahlt vs. BUW?
    - War Frühstück im Hotel enthalten?
    - IBAN/BIC (wenn noch nicht bekannt)
    - Weicht der tatsächliche Reiseverlauf vom Antrag ab?
 
-4. **DR-004 ausfüllen** — Nutze die PDF-Skill-Methode für ausfüllbare Formulare. Details in `references/form-fields-abrechnung.md`.
+5. **DR-004 ausfüllen** — Nutze die PDF-Skill-Methode für ausfüllbare Formulare. Details in `references/form-fields-abrechnung.md`.
 
-5. **Email-Entwurf** — Erstelle einen fertigen Email-Entwurf für die Einreichung. Format und Vorlage in `references/kontakte-und-ablauf.md`.
+6. **Email-Entwurf** — Erstelle einen fertigen Email-Entwurf für die Einreichung. Format und Vorlage in `references/kontakte-und-ablauf.md`.
    - **An**: Reisekostenabrechnung@uni-weimar.de
    - **Betreff**: `Name, Vorname; Reisezeitraum; Geschäftsort; Abrechnungsobjekt`
-   - **Anhänge**: DR-004 + genehmigter DR-001 + alle Belege (als PDFs)
+   - **Anhänge**: DR-004 + genehmigter DR-001 + alle Belege (als PDFs, mit standardisierten Dateinamen)
 
-6. **Nächste Schritte** — Erkläre dem User:
+7. **Nächste Schritte** — Erkläre dem User:
    - Email absenden
    - **Originalbelege 5 Jahre aufbewahren** (eigene Verantwortung seit 18.03.2026!)
    - Frist: max. 3 Monate nach Reiseende
@@ -302,3 +334,7 @@ Wichtig: Die Checkbox-Werte variieren zwischen den Formularen:
 5. Falls die Website nicht erreichbar ist (kein VPN): Verwende lokale Formulare aus dem Ordner des Users, aber weise darauf hin dass die Aktualität nicht geprüft werden konnte
 
 Alle Download-URLs findest du in `references/urls.md`.
+
+### Prüfdatum aktualisieren
+
+Das Feld `buw_website_checked` im Frontmatter dieser Datei gibt an, wann die BUW-Dienstreiseseite zuletzt geprüft und die Formulare/Regeln als aktuell bestätigt wurden. **Dieses Datum wird nur vom Skill-Entwickler aktualisiert**, nicht automatisch bei jeder Session-Prüfung. Wenn der Skill-Entwickler nach einer Prüfung bestätigt, dass alles aktuell ist, wird das Datum im Frontmatter und im CHANGELOG aktualisiert.
