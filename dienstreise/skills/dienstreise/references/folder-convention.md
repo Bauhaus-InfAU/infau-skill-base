@@ -21,12 +21,10 @@ Jeder Reise-Unterordner wird vom Skill automatisch angelegt. Der User muss nur d
 
 ```
 [NN]_[Zielort] [Veranstaltung]/
-├── DR-001-dienstreiseantrag.pdf          ← Leeres Formular (wird ausgefüllt)
-├── DR-001-dienstreiseantrag-ausgefuellt.pdf  ← Ausgefüllter Antrag
+├── DR-001-dienstreiseantrag_Bielik_2026_Koeln.pdf  ← Ausgefüllter Antrag
 ├── DR_Antrag_Bewilligung.pdf             ← Gescannter bewilligter Antrag
-├── DR-003-anlage_kostenkalkulation.xlsx  ← Kostenkalkulation
-├── DR-004-reisekostenrechnung.pdf        ← Leeres Formular
-├── DR-004-reisekostenrechnung-ausgefuellt.pdf ← Ausgefüllte Abrechnung
+├── DR-003-anlage_kostenkalkulation_Bielik_2026_Koeln.xlsx  ← Kostenkalkulation
+├── DR-004-reisekostenrechnung_Bielik_2026_Koeln.pdf ← Ausgefüllte Abrechnung
 ├── Belege/
 │   ├── 01_Bahn_Weimar-Koeln_74.49EUR.pdf
 │   ├── 02_Bahn_Koeln-Weimar_101.49EUR.pdf
@@ -51,7 +49,7 @@ Jeder Reise-Unterordner wird vom Skill automatisch angelegt. Der User muss nur d
 
 - Ordnername: `[NN]_[Ort] [Veranstaltung]` — z.B. `01_Koln DigitalBau`, `02_Berlin BIM World`
 - NN = laufende Nummer im Jahr
-- Ausgefüllte Formulare: Originaldateiname + `-ausgefuellt` Suffix
+- Ausgefüllte Formulare: `[Formular]_[Nachname]_[JJJJ]_[Zielort].[ext]` — z.B. `DR-001-dienstreiseantrag_Bielik_2026_Koeln.pdf`
 - Belege: `[NN]_[Kategorie]_[Beschreibung]_[Betrag]EUR.[ext]` — siehe `references/beleg-naming.md`
 
 ## Wie der Skill den Ordner erkennt
@@ -62,6 +60,6 @@ Der Skill sucht nach folgenden Hinweisen um zu erkennen wo der User im Prozess s
 |----------------|-----------|
 | `DR_Antrag_Bewilligung.pdf` | Antrag genehmigt → Phase 2 (Abrechnung) anbieten |
 | `Belege/` mit PDFs darin | Belege vorhanden → bereit für Abrechnung |
-| `DR-001-*ausgefuellt*` | Antrag schon ausgefüllt, aber noch nicht genehmigt |
+| `DR-001-dienstreiseantrag_*` | Antrag schon ausgefüllt, aber noch nicht genehmigt |
 | Leerer Ordner | Neue Reise → Phase 1 (Antrag) starten |
 | `Formulare/` Ordner | User hat Formulare lokal, können als Vorlagen genutzt werden |

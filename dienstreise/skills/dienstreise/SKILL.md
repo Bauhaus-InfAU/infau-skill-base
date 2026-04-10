@@ -315,6 +315,21 @@ Beide Formulare (DR-001 und DR-004) sind ausfüllbare PDFs. Verwende die Methode
 3. `field_values.json` erstellen
 4. Mit pypdf `PdfWriter` die Felder befüllen
 5. Ergebnis visuell prüfen
+6. **Ausgefülltes Formular benennen** nach dem Schema: `[Formular]_[Nachname]_[JJJJ]_[Zielort].[ext]`
+
+### Dateinamen ausgefüllter Formulare
+
+Jedes ausgefüllte Formular wird mit Nachname, Reisejahr und Zielort benannt. Umlaute ersetzen (ae/oe/ue/ss), keine Leerzeichen.
+
+| Formular | Beispiel-Dateiname |
+|----------|-------------------|
+| DR-001 | `DR-001-dienstreiseantrag_Bielik_2026_Koeln.pdf` |
+| DR-003 | `DR-003-anlage_kostenkalkulation_Bielik_2026_Koeln.xlsx` |
+| DR-004 | `DR-004-reisekostenrechnung_Bielik_2026_Koeln.pdf` |
+| DR-002 | `DR-002-dienstreise_ausland_Bielik_2026_Prag.pdf` |
+| DR-005 | `DR-005-reisekostenabschlag_antrag_Bielik_2026_Koeln.doc` |
+
+Daten kommen aus: Nachname → `personal-data.md`, Jahr/Zielort → aus der aktuellen Reise.
 
 Wichtig: Die Checkbox-Werte variieren zwischen den Formularen:
 - **DR-001**: Hat zwei Arten von Checkboxen — benannte Felder nutzen `/On`, `Kontrollkästchen*`-Felder nutzen `/Ja`

@@ -12,6 +12,7 @@ Alle wesentlichen Änderungen am Skill werden hier dokumentiert. Format: [Semant
 - **Versionierung & Statuszeile**: Bei jeder Aktivierung wird Version, letztes Update und Datum der letzten BUW-Regelwerk-Prüfung angezeigt.
 - **Changelog**: Dieser Changelog — abrufbar wenn der User nach "was ist neu" oder der Version fragt.
 - **Projekt-Ordnerstruktur**: Ein übergreifender Ordner (`Dienstreisen/`) sammelt alle Reisen. `personal-data.md` wird geteilt. Dokumentiert in `references/folder-convention.md`.
+- **Formular-Benennung**: Ausgefüllte Formulare werden nach Schema `[Formular]_[Nachname]_[JJJJ]_[Zielort].[ext]` benannt (z.B. `DR-001-dienstreiseantrag_Bielik_2026_Koeln.pdf`). Ersetzt das alte `-ausgefuellt`-Suffix.
 
 ### Bugfix
 - **K29 war falsch als "Deutschlandticket Ja" dokumentiert** — K29 ist tatsächlich die Anlage-Checkbox "Auslandsdienstreise". Bei Inlandsreisen mit Deutschlandticket wurde fälschlich das Feld "Anlage zum Antrag auf Finanzierung einer Auslandsdienstreise" angekreuzt. Fix: Deutschlandticket nutzt K28 + Nein_7, K29/K30 gehören zur Anlage-Sektion.

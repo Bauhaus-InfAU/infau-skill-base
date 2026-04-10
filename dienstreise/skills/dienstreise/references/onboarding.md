@@ -62,10 +62,10 @@ Falls der User fragt wie die Ordnerstruktur aussieht, erkläre kurz:
 > Dienstreisen/
 > ├── personal-data.md                    (deine Daten, einmalig)
 > ├── 01_Koeln DigitalBau/               (erste Reise)
-> │   ├── DR-001-...-ausgefuellt.pdf      (Antrag — fülle ich aus)
-> │   ├── DR-003-...-ausgefuellt.xlsx     (Kalkulation — fülle ich aus)
+> │   ├── DR-001-..._Bielik_2026_Koeln.pdf (Antrag — fülle ich aus)
+> │   ├── DR-003-..._Bielik_2026_Koeln.xlsx (Kalkulation — fülle ich aus)
 > │   ├── DR_Antrag_Bewilligung.pdf       (kommt vom Dekanat zurück)
-> │   ├── DR-004-...-ausgefuellt.pdf      (Abrechnung — fülle ich aus)
+> │   ├── DR-004-..._Bielik_2026_Koeln.pdf (Abrechnung — fülle ich aus)
 > │   └── Belege/                         (deine Belege — legst du hier rein)
 > │       ├── 01_Bahn_Weimar-Koeln_...pdf
 > │       └── ...
