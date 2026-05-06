@@ -88,22 +88,59 @@ Vergleiche die tatsächlichen Belege mit dem bewilligten Antrag. Stelle per AskU
 ### Immer fragen:
 - **Selbst bezahlt vs. BUW?** — Für jeden größeren Posten (Bahn, Hotel, Tickets)
 - **IBAN/BIC** — Wenn nicht in personal-data.md hinterlegt
-- **Frühstück im Hotel?** — Nur fragen wenn nicht eindeutig aus dem Beleg ersichtlich
+- **Verpflegung** — Eigener Klärungsblock, siehe Schritt 3a (immer durchlaufen, treibt Section 4 von DR-004 und die Tagegeld-Kürzungen)
 
 ### Bei Abweichungen fragen:
 - **Andere Reisezeiten?** — Wenn Belege andere Zeiten zeigen als der Antrag
 - **Zusätzliche Kosten?** — Kosten die nicht im Antrag kalkuliert waren
 - **Fehlende Belege?** — Wenn für bewilligte Positionen kein Beleg vorliegt
 
+## Schritt 3a: Verpflegung pro Tag und Mahlzeit
+
+Section 4 von DR-004 verlangt für **jeden Reisetag** eine Matrix: pro Mahlzeit (Frühstück / Mittag / Abend) ist anzugeben, ob sie unentgeltlich bereitgestellt wurde — und falls ja, durch wen (BUW oder Dritte) und in welcher Quelle (ÜK / TN-Gebühr / Flug / Sonstiges) sie enthalten war. Diese Angaben treiben **direkt die Tagegeld-Kürzungen** (Frühstück 5,60 EUR / Mittag 11,20 EUR / Abend 11,20 EUR — siehe `references/rules.md`). Daher: immer durchgehen, auch wenn der User intuitiv sagt „Verpflegung war keine".
+
+### Ablauf
+
+1. **Pre-Fills aus den Belegen ableiten:**
+   - **Hotelrechnung mit „inkl. Frühstück" auf BUW-Adresse** → Frühstück für jede Hotelnacht als „Dritte / ÜK" vormerken (das Hotel = Dritter; die Mahlzeit war in den Übernachtungskosten enthalten). Beispiel: Hotel-Check-in 21.04. → 21.04. + 22.04. Frühstück.
+   - **Hotelrechnung auf Privatadresse** → Frühstück gilt **nicht** als auf Arbeitgeberveranlassung — nicht eintragen (Quelle: `rules.md`).
+   - **Tagungsticket / Konferenzprogramm** mit Catering → entsprechende Mahlzeiten als „Dritte / TN-geb" vormerken.
+   - **Flug mit Bordverpflegung in TN-fähiger Klasse** → Mahlzeit als „Dritte / Flug" vormerken (in der Praxis selten relevant für Inland).
+
+2. **Pro Reisetag** (vom kalendarischen Beginn bis Ende laut tatsächlichen Reisezeiten) den User fragen, falls aus den Belegen nicht eindeutig:
+   - „An [Datum] — wurden Mittag- oder Abendessen unentgeltlich bereitgestellt? Wenn ja: durch BUW oder durch Dritte (Hotel/Konferenz/…), und in welcher Quelle enthalten (ÜK / TN-Gebühr / Flug / Sonstiges)?"
+   - **Eine Frage pro Nachricht** gilt auch hier — pro Tag eine Frage, nicht alle auf einmal.
+
+3. **Bestätigungstabelle zeigen** (analog zum Beleg-Umbenennungs-Pattern in Schritt 2b):
+
+   ```
+   Verpflegungs-Übersicht — bitte bestätigen:
+
+   | Datum      | Frühstück       | Mittag    | Abend     | Quelle |
+   |------------|-----------------|-----------|-----------|--------|
+   | 21.04.2026 | Dritte (Hotel)  | —         | —         | ÜK     |
+   | 22.04.2026 | Dritte (Hotel)  | —         | —         | ÜK     |
+
+   Stimmt das so? (Ja → DR-004 ausfüllen / Korrektur → was ändern?)
+   ```
+
+4. **Erst nach Bestätigung** in Schritt 5 die Daten ins DR-004 eintragen.
+
+5. **Bei > 6 Reisetagen**: DR-006 (Anlage Verpflegung) aus `assets/formulare/DR-006-rkr_anlage_verpflegung.pdf` in den Reiseordner kopieren, weitere Tage dort eintragen, und in DR-004 die Checkbox `Anlage 1 beigefügt` setzen.
+
+### Wenn keine Verpflegung unentgeltlich bereitgestellt wurde
+
+User-Bestätigung „keine" → in Schritt 5 nur `Nein_6` ankreuzen, Tabelle bleibt leer. Trotzdem den Punkt in der Bestätigung explizit zeigen, damit der User die Aussage bewusst trifft (Tagegeld-Konsequenz).
+
 ## Schritt 4: Tagegeld berechnen
 
 Anhand der tatsächlichen Reisezeiten:
 1. Berechne die Abwesenheitsdauer (Beginn der Reise ab Wohnung bis Ende der Reise an Wohnung)
-2. Wende die Tagegeld-Tabelle an (siehe rules.md)
+2. Wende die Tagegeld-Tabelle an (siehe `rules.md`)
 3. Für An-/Abreisetage: Berechne Stunden separat
-4. Kürze bei unentgeltlichen Mahlzeiten auf Arbeitgeberveranlassung
+4. Kürze bei unentgeltlichen Mahlzeiten auf Arbeitgeberveranlassung — Eingaben kommen direkt aus **Schritt 3a** (Frühstück −5,60 EUR / Mittag −11,20 EUR / Abend −11,20 EUR vom vollen Tagessatz)
 
-Das Tagegeld wird von der Reisekostenstelle berechnet — nicht in DR-004 eintragen. Aber die Angaben zu Mahlzeiten und Reisezeiten müssen korrekt sein, da sie die Berechnung bestimmen.
+Die finale Berechnung macht die Reisekostenstelle — der Skill trägt nur die Verpflegungs-Matrix in Section 4 von DR-004 (Schritt 5) sowie die Reisezeiten ein. Die Korrektheit der Mahlzeitenangaben ist entscheidend, weil die Reisekostenstelle daraus die Kürzungen ermittelt.
 
 ## Schritt 5: DR-004 ausfüllen
 
@@ -124,14 +161,24 @@ Der DR-004 ist ein ausfüllbares PDF. Verwende die Methode aus der PDF-Skill:
 | DR-Nr. | Aus bewilligtem Antrag |
 | Reiseverlauf | Tatsächliche Zeiten aus Belegen (Tickets) |
 | Übernachtungskosten | Hotelrechnung |
-| Frühstück/Mahlzeiten | Hotelrechnung + User-Angabe |
+| Verpflegung Section 4 | **Verpflegungs-Matrix aus Schritt 3a** (siehe unten) |
 | Bahnkosten | Summe aller Bahntickets |
 | Nebenkosten | Messe-Tickets, sonstige Belege |
 | IBAN/BIC | personal-data.md |
 
+### Section 4 (Verpflegung) ausfüllen
+
+Aus der in Schritt 3a bestätigten Verpflegungs-Matrix:
+
+- **Keine unentgeltliche Verpflegung** (User hat „keine" bestätigt) → nur `Nein_6` (=`/On`) ankreuzen, Tabelle leer lassen.
+- **Unentgeltliche Verpflegung vorhanden** → `Ja wenn ja bitte Tabelle ausfüllen…` (=`/On`) ankreuzen plus pro Reisetag eine Tabellenzeile (Datum-Textfeld + die zutreffenden Mahlzeiten- und Quelle-Checkboxen, alle =`/Ja`).
+- **> 6 Reisetage** → zusätzlich `Anlage 1 beigefügt` (=`/On`) ankreuzen, DR-006 aus `assets/formulare/` in den Reiseordner kopieren und befüllen.
+
+Die exakten Feld-IDs pro Zeile/Spalte stehen in `references/form-fields-abrechnung.md` unter „Verpflegung (Sektion 4)". Die Suffixe (`.0`, `.1`, …) sind nicht zeilenweise sortiert — Tabelle dort konsultieren oder per X/Y-Koordinate adressieren.
+
 ## Schritt 6: Email formulieren und nächste Schritte erklären
 
-Erstelle eine **komplett fertige Email**, die der User nur noch absenden muss. Verwende die konkreten Daten aus der Abrechnung:
+Erstelle eine **komplett fertige Email**, die der User nur noch absenden muss. Verwende die konkreten Daten aus der Abrechnung.
 
 **An:** Reisekostenabrechnung@uni-weimar.de
 **Betreff:** `[Nachname], [Vorname]; [DD.-DD.MM.YYYY]; [Ort]; [Abrechnungsobjekt]`
@@ -142,9 +189,28 @@ Beispiel: `Name, Vorname; 24.-25.03.2026; Geschäftsort; Abrechnungsobjekt`
 1. Ausgefüllte Reisekostenrechnung (DR-004) — unterschrieben
 2. Genehmigter Dienstreiseantrag (DR-001) — den Scan vom Dekanat
 3. Alle Belege als PDF
+4. Falls > 6 Reisetage: Anlage 1 Verpflegung (DR-006)
 
-**Email-Text** (mit eingesetzten Werten!):
-```
+### Email als Markdown-Datei speichern
+
+Speichere die fertige Email zusätzlich als `Email-Abrechnung_[Nachname]_[JJJJ]_[Zielort].md` im Reiseordner. Der User kann den Inhalt von dort per Copy-Paste in den Mailclient übernehmen.
+
+Format der .md-Datei (mit eingesetzten Werten):
+
+```markdown
+# Email — Reisekostenabrechnung [ORT], [DATUM_VON]–[DATUM_BIS]
+
+**An:** Reisekostenabrechnung@uni-weimar.de
+**Betreff:** [Nachname], [Vorname]; [DD.-DD.MM.YYYY]; [Ort]; [Abrechnungsobjekt]
+**Anhänge:**
+- DR-004-reisekostenrechnung_[Nachname]_[JJJJ]_[Zielort].pdf
+- [genehmigter DR-001 Dateiname]
+- Belege/[Beleg 1 Dateiname]
+- Belege/[Beleg 2 Dateiname]
+- …
+
+---
+
 Sehr geehrte Damen und Herren,
 
 anbei übersende ich Ihnen meine Reisekostenabrechnung für die Dienstreise nach [ORT] vom [DATUM_VON] bis [DATUM_BIS].
@@ -156,13 +222,15 @@ Beigefügt sind:
   - [Beleg 1: z.B. "DB-Fahrkarte Weimar–Köln, 74,49 EUR"]
   - [Beleg 2: z.B. "DB-Fahrkarte Köln–Weimar, 101,49 EUR"]
   - [Beleg 3: z.B. "Hotelrechnung Premier Inn Köln, 111,87 EUR"]
-  - [weitere...]
+  - [weitere…]
 
 Mit freundlichen Grüßen
 [Name]
 [Fakultät/Bereich]
 Tel. [Telefon]
 ```
+
+Nach dem Speichern dem User den Pfad zur `Email-Abrechnung_…md` nennen.
 
 ### Pre-Flight-Reminder bei fehlenden Bahn-Rechnungen
 

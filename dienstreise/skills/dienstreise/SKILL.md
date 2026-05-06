@@ -1,6 +1,6 @@
 ---
 name: dienstreise
-version: 1.7.0
+version: 1.8.0
 last_updated: 2026-05-06
 buw_website_checked: 2026-04-10
 description: >
@@ -200,7 +200,7 @@ Lies zuerst `references/abrechnung-workflow.md` für den detaillierten Ablauf.
 
 5. **Klärungsfragen stellen** — Frage per AskUserQuestion:
    - Welche Kosten hat der User selbst bezahlt vs. BUW?
-   - War Frühstück im Hotel enthalten?
+   - **Verpflegung pro Tag und Mahlzeit** (Frühstück / Mittag / Abend × BUW/Dritte × Quelle ÜK/TN-geb/Flug/Sonstiges) — eigener Klärungsblock, siehe `references/abrechnung-workflow.md` Schritt 3a. Treibt Section 4 von DR-004 und die Tagegeld-Kürzungen.
    - IBAN/BIC (wenn noch nicht bekannt)
    - Weicht der tatsächliche Reiseverlauf vom Antrag ab?
 
@@ -237,6 +237,34 @@ Seit dem 18.03.2026 ist der gesamte Dienstreiseprozess digital:
 - Auch Abschläge und BahnCard-Anträge digital per Email
 
 **Der Skill soll immer einen fertigen Email-Entwurf formulieren**, sowohl für Anträge als auch für Abrechnungen. Wenn Emails zu schreiben sind, formuliere sie komplett vor — der User soll nur noch absenden müssen.
+
+**Email-Entwürfe werden zusätzlich als Markdown-Datei im Reiseordner gespeichert**, damit der User sie per Copy-Paste in seinen Mailclient übernehmen kann. Dateinamenschema:
+
+| Email-Typ | Dateiname | Empfänger |
+|-----------|-----------|-----------|
+| Antrag (DR-001 Einreichung) | `Email-Antrag_[Nachname]_[JJJJ]_[Zielort].md` | caad@architektur.uni-weimar.de (Franziska Schuchort) |
+| Abrechnung (DR-004 Einreichung) | `Email-Abrechnung_[Nachname]_[JJJJ]_[Zielort].md` | Reisekostenabrechnung@uni-weimar.de |
+| Abschlag (DR-005) | `Email-Abschlag_[Nachname]_[JJJJ]_[Zielort].md` | Reisekostenabrechnung@uni-weimar.de |
+
+**Inhalt der .md-Datei** (immer dasselbe Format):
+
+```markdown
+# Email — [Email-Typ] [Zielort], [Reisezeitraum]
+
+**An:** [empfänger@uni-weimar.de]
+**CC:** [falls relevant]
+**Betreff:** [konkreter Betreff]
+**Anhänge:**
+- [Anhang 1 Dateiname]
+- [Anhang 2 Dateiname]
+- …
+
+---
+
+[vollständiger Email-Text mit eingesetzten Werten]
+```
+
+Nach dem Speichern dem User explizit den Pfad zur .md-Datei nennen, damit er weiß, wo der Entwurf liegt.
 
 ---
 

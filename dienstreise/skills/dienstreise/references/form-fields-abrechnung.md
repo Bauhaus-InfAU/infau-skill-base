@@ -101,10 +101,34 @@ Hinweis: Die Checkbox-Werte in DR-004 sind GEMISCHT — manche verwenden `/On`+`
 | `Kontrollkästchen20` | checkbox (/Ja) | Telefon/Internet dienstl. erforderlich: Nein |
 
 ### Verpflegung (Sektion 4)
+
+**Übersichts-Checkboxen** (Y ≈ 174.7):
+
 | Feld-ID | Typ | Beschreibung |
 |---------|-----|-------------|
-| `Nein_6` | checkbox (/On) | Keine unentgeltliche Verpflegung |
-| `Ja wenn ja bitte Tabelle ausfüllen...` | checkbox (/On) | Unentgeltl. Verpflegung erhalten |
+| `Nein_6` | checkbox (/On) | Keine unentgeltliche Verpflegung erhalten |
+| `Ja wenn ja bitte Tabelle ausfüllen ggf Anlage 1 zur Reisekostenrechnung Nr 5 nutzen` | checkbox (/On) | Unentgeltl. Verpflegung erhalten — Tabelle ausfüllen |
+| `Anlage 1 beigefügt` | checkbox (/On) | DR-006 Anlage Verpflegung beigefügt (bei > 6 Reisetagen nutzen) |
+
+**Tabelle (6 Zeilen × 10 Checkboxen + Datum-Textfeld pro Zeile)** — alle Checkboxen verwenden `/Ja` als checked_value:
+
+| Zeile | Datum (Tx) | F-BUW | F-Dritte | M-BUW | M-Dritte | A-BUW | A-Dritte | ÜK | TN-geb | Flug | Sonstiges |
+|-------|------------|-------|----------|-------|----------|-------|----------|----|----|------|-----------|
+| 1 | `Zeitraum Datum amvonbisRow1` | `Kontrollkästchen35` | `Kontrollkästchen41.0` | `Kontrollkästchen42.0` | `Kontrollkästchen43.0` | `Kontrollkästchen44.0` | `Kontrollkästchen45.0` | `Kontrollkästchen46.0` | `Kontrollkästchen47.0` | `Kontrollkästchen48.0` | `Kontrollkästchen49.0` |
+| 2 | `Zeitraum Datum amvonbisRow2` | `Kontrollkästchen36` | `Kontrollkästchen41.3` | `Kontrollkästchen42.3` | `Kontrollkästchen43.3` | `Kontrollkästchen44.2` | `Kontrollkästchen45.2` | `Kontrollkästchen46.2` | `Kontrollkästchen47.2` | `Kontrollkästchen48.2` | `Kontrollkästchen49.2` |
+| 3 | `Zeitraum Datum amvonbisRow3` | `Kontrollkästchen37` | `Kontrollkästchen41.5` | `Kontrollkästchen42.5` | `Kontrollkästchen43.5` | `Kontrollkästchen44.5` | `Kontrollkästchen45.5` | `Kontrollkästchen46.5` | `Kontrollkästchen47.5` | `Kontrollkästchen48.5` | `Kontrollkästchen49.5` |
+| 4 | `Zeitraum Datum amvonbisRow4` | `Kontrollkästchen38` | `Kontrollkästchen41.1` | `Kontrollkästchen42.1` | `Kontrollkästchen43.1` | `Kontrollkästchen44.1` | `Kontrollkästchen45.1` | `Kontrollkästchen46.1` | `Kontrollkästchen47.1` | `Kontrollkästchen48.1` | `Kontrollkästchen49.1` |
+| 5 | `Zeitraum Datum amvonbisRow5` | `Kontrollkästchen39` | `Kontrollkästchen41.2` | `Kontrollkästchen42.2` | `Kontrollkästchen43.4` | `Kontrollkästchen44.3` | `Kontrollkästchen45.3` | `Kontrollkästchen46.3` | `Kontrollkästchen47.3` | `Kontrollkästchen48.3` | `Kontrollkästchen49.3` |
+| 6 | `Zeitraum Datum amvonbisRow6` | `Kontrollkästchen40` | `Kontrollkästchen41.4` | `Kontrollkästchen42.4` | `Kontrollkästchen43.2` | `Kontrollkästchen44.4` | `Kontrollkästchen45.4` | `Kontrollkästchen46.4` | `Kontrollkästchen47.4` | `Kontrollkästchen48.4` | `Kontrollkästchen49.4` |
+
+Spaltenbedeutung:
+- **F/M/A-BUW**: Frühstück / Mittag / Abend wurde durch die **BUW** unentgeltlich bereitgestellt (BUW hat direkt bezahlt)
+- **F/M/A-Dritte**: Frühstück / Mittag / Abend wurde durch **Dritte** unentgeltlich bereitgestellt (z.B. Hotel im Rahmen der ÜK, Konferenz im Rahmen der TN-Gebühr, Caterer, etc.)
+- **ÜK / TN-geb / Flug / Sonstiges**: Quelle der unentgeltlichen Mahlzeit — wo war sie enthalten?
+
+> **Achtung — unregelmäßige Kid-Nummerierung**: Die Suffixe (`.0`, `.1`, `.2`, …) hinter dem `Kontrollkästchen41…49`-Präfix sind **nicht** zeilenweise sortiert (das PDF /Kids-Array ist intern unsortiert). Die obige Tabelle zeigt das tatsächliche Mapping. Spalten F-BUW (Erstspalte) sind als eigenständige Felder `Kontrollkästchen35..40` realisiert — eine pro Zeile.
+>
+> **Robuste Alternative**: Statt namen-basiert zu adressieren, kann die Implementierung die Page-Annotations iterieren und die Verpflegungs-Checkboxen über Y-Band (Zeile) und X-Band (Spalte) zuordnen. Y-Bänder: Z1 ≈ 127, Z2 ≈ 114, Z3 ≈ 102, Z4 ≈ 89, Z5 ≈ 76, Z6 ≈ 64. X-Bänder: F-BUW ≈ 182.5, F-Dritte ≈ 231.6, M-BUW ≈ 277.6, M-Dritte ≈ 320.1, A-BUW ≈ 359.5, A-Dritte ≈ 394.5, ÜK ≈ 430.1, TN-geb ≈ 465.5, Flug ≈ 500.9, Sonstiges ≈ 539.8.
 
 ## Seite 2
 

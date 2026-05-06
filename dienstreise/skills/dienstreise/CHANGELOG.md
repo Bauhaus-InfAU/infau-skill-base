@@ -4,6 +4,24 @@ Alle wesentlichen Änderungen am Skill werden hier dokumentiert. Format: [Semant
 
 ---
 
+## [1.8.0] — 2026-05-06
+
+### Neu
+- **Verpflegungs-Abfrage in Phase 2 (neuer Schritt 3a)**: Pro Reisetag und pro Mahlzeit (Frühstück / Mittag / Abend) wird abgefragt, ob unentgeltliche Verpflegung bereitgestellt wurde — durch BUW oder Dritte (Hotel, Konferenz, …) — und in welcher Quelle (ÜK / TN-Gebühr / Flug / Sonstiges) sie enthalten war. Bisher wurde nur das Hotel-Frühstück gestreift; die Folge war, dass Section 4 von DR-004 unvollständig befüllt und die Tagegeld-Kürzungen (5,60 / 11,20 / 11,20 EUR) nicht sauber dokumentiert waren. Pre-Fills aus Belegen (z.B. Hotel mit Frühstück → automatisch Frühstück = Dritte/ÜK), Bestätigungstabelle vor dem Eintragen.
+- **Feldmappings für Section 4 (Verpflegung)**: `references/form-fields-abrechnung.md` enthält jetzt die vollständige Tabelle mit allen 60 Checkbox-IDs (6 Zeilen × 10 Spalten) plus Datum-Textfelder und „Anlage 1 beigefügt"-Checkbox. Hinweis auf unregelmäßige Kid-Suffixe (`.0`, `.1`, …) und die robuste Alternative über X/Y-Koordinaten.
+- **Email-Entwürfe als Markdown-Datei**: Antrag-, Abrechnung- und Abschlag-Emails werden zusätzlich als `Email-[Typ]_[Nachname]_[JJJJ]_[Zielort].md` im Reiseordner gespeichert. Format mit YAML-ähnlichem Header (An / CC / Betreff / Anhänge) plus Volltext, damit der User per Copy-Paste in seinen Mailclient übernehmen kann. Schema dokumentiert in `SKILL.md` Sektion „Digitale Einreichung".
+
+### Geändert
+- Phase 2 (Abrechnung) hat jetzt 9 Schritte (neuer Schritt 3a: Verpflegung).
+- `references/abrechnung-workflow.md`: Schritt 3 verweist auf 3a; Schritt 4 (Tagegeld) erklärt die Kürzungs-Quelle; Schritt 5 (DR-004 ausfüllen) hat eigenen Block für Section 4; Schritt 6 zeigt das Email-MD-Format.
+- `references/antrag-workflow.md`: Antrag- und Abschlag-Email werden im neuen MD-Format gespeichert.
+- `SKILL.md`: Phase 2 Kurzübersicht Schritt 5 zeigt Verpflegung statt nur Frühstück.
+
+### BUW-Regelwerk
+- Geprüft am: 2026-04-10 — keine Änderung. Auslöser sind zwei Lücken im Skill-Workflow, nicht eine Regeländerung.
+
+---
+
 ## [1.7.0] — 2026-05-06
 
 ### Neu

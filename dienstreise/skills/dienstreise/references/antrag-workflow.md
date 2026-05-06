@@ -111,11 +111,45 @@ Erkläre die nächsten Schritte klar und konkret:
 - Bei Abschlag > 100 EUR: DR-005 mit Kopie des genehmigten Antrags per Email an Reisekostenabrechnung@uni-weimar.de
 - Bei Fragen zum Antrag: Reisekostenstelle kontaktieren (Tel. 58 22 14 / 58 22 22)
 
-### Email für Abschlag-Antrag (wenn zutreffend):
-Formuliere dem User eine fertige Email:
+### Email für Antrag-Einreichung an InfAU Office:
+
+Speichere die Email als `Email-Antrag_[Nachname]_[JJJJ]_[Zielort].md` im Reiseordner. Format:
+
+```markdown
+# Email — Dienstreiseantrag [ORT], [DATUM_VON]–[DATUM_BIS]
+
+**An:** caad@architektur.uni-weimar.de
+**Betreff:** Dienstreiseantrag — [Nachname], [Vorname]; [DD.-DD.MM.YYYY]; [Ort]
+**Anhänge:**
+- DR-001-dienstreiseantrag_[Nachname]_[JJJJ]_[Zielort].pdf
+- DR-003-anlage_kostenkalkulation_[Nachname]_[JJJJ]_[Zielort].xlsx
+
+---
+
+Liebe Franzi,
+
+anbei mein Dienstreiseantrag für die Reise nach [ORT] vom [DATUM_VON] bis [DATUM_BIS] ([REISEZWECK]).
+
+Bitte leite die Unterlagen ans Dekanat weiter.
+
+Mit freundlichen Grüßen
+[NAME]
 ```
-An: Reisekostenabrechnung@uni-weimar.de
-Betreff: Abschlag — [Name, Vorname]; [Reisezeitraum]; [Ort]; [Abrechnungsobjekt]
+
+### Email für Abschlag-Antrag (wenn zutreffend):
+
+Speichere die Email als `Email-Abschlag_[Nachname]_[JJJJ]_[Zielort].md` im Reiseordner. Format:
+
+```markdown
+# Email — Abschlag-Antrag [ORT], [DATUM_VON]–[DATUM_BIS]
+
+**An:** Reisekostenabrechnung@uni-weimar.de
+**Betreff:** Abschlag — [Nachname], [Vorname]; [DD.-DD.MM.YYYY]; [Ort]; [Abrechnungsobjekt]
+**Anhänge:**
+- DR-005-reisekostenabschlag_antrag_[Nachname]_[JJJJ]_[Zielort].doc
+- [genehmigter DR-001 Dateiname]
+
+---
 
 Sehr geehrte Damen und Herren,
 
@@ -129,3 +163,5 @@ Mit freundlichen Grüßen
 [NAME]
 [FAKULTÄT/BEREICH]
 ```
+
+Nach dem Speichern dem User jeweils den Pfad zur .md-Datei nennen, damit er sie zum Copy-Paste finden kann.
