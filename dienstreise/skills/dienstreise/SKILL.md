@@ -1,7 +1,7 @@
 ---
 name: dienstreise
-version: 1.6.0
-last_updated: 2026-04-10
+version: 1.7.0
+last_updated: 2026-05-06
 buw_website_checked: 2026-04-10
 description: >
   Dienstreise-Assistent der Bauhaus-Universität Weimar. Begleitet Beschäftigte durch den gesamten Dienstreise-Prozess: vom Antrag (DR-001) über die Kostenkalkulation (DR-003) bis zur Reisekostenrechnung (DR-004).
@@ -194,22 +194,25 @@ Lies zuerst `references/abrechnung-workflow.md` für den detaillierten Ablauf.
    - Messe-/Konferenztickets (Preis)
    - Sonstige Belege
 
-3. **Belege umbenennen** — Benenne die Belegdateien nach dem einheitlichen Schema um. Siehe `references/beleg-naming.md` für das Schema und den genauen Ablauf. **Wichtig: Immer zuerst dem User die geplante Umbenennung als Tabelle zeigen und auf Bestätigung warten!**
+3. **DB-Rechnung prüfen** — Bei Bahn-Belegen prüfen, ob es echte Rechnungen mit MwSt-Ausweis sind oder nur Online-Tickets. Falls nur Online-Tickets vorliegen: warnen und Anleitung zum Nachladen aus bahn.de geben (Reisekostenstelle braucht die formale Rechnung für den Vorsteuerabzug). Workflow läuft trotzdem weiter, falls der User entscheidet, ohne Rechnung weiterzumachen — Pre-Flight-Reminder erfolgt vor dem Versenden. Siehe `references/db-rechnung-pruefung.md`.
 
-4. **Klärungsfragen stellen** — Frage per AskUserQuestion:
+4. **Belege umbenennen** — Benenne die Belegdateien nach dem einheitlichen Schema um. Siehe `references/beleg-naming.md` für das Schema und den genauen Ablauf. **Wichtig: Immer zuerst dem User die geplante Umbenennung als Tabelle zeigen und auf Bestätigung warten!**
+
+5. **Klärungsfragen stellen** — Frage per AskUserQuestion:
    - Welche Kosten hat der User selbst bezahlt vs. BUW?
    - War Frühstück im Hotel enthalten?
    - IBAN/BIC (wenn noch nicht bekannt)
    - Weicht der tatsächliche Reiseverlauf vom Antrag ab?
 
-5. **DR-004 ausfüllen** — Nutze die PDF-Skill-Methode für ausfüllbare Formulare. Details in `references/form-fields-abrechnung.md`.
+6. **DR-004 ausfüllen** — Nutze die PDF-Skill-Methode für ausfüllbare Formulare. Details in `references/form-fields-abrechnung.md`.
 
-6. **Email-Entwurf** — Erstelle einen fertigen Email-Entwurf für die Einreichung. Format und Vorlage in `references/kontakte-und-ablauf.md`.
+7. **Email-Entwurf** — Erstelle einen fertigen Email-Entwurf für die Einreichung. Format und Vorlage in `references/kontakte-und-ablauf.md`.
    - **An**: Reisekostenabrechnung@uni-weimar.de
    - **Betreff**: `Name, Vorname; Reisezeitraum; Geschäftsort; Abrechnungsobjekt`
    - **Anhänge**: DR-004 + genehmigter DR-001 + alle Belege (als PDFs, mit standardisierten Dateinamen)
+   - **Pre-Flight bei fehlenden Bahn-Rechnungen**: Falls in Schritt 3 Online-Tickets ohne Rechnung gefunden wurden und der User trotzdem weitergemacht hat, vor dem Versenden noch einmal explizit erinnern (siehe `references/db-rechnung-pruefung.md`).
 
-7. **Nächste Schritte** — Erkläre dem User:
+8. **Nächste Schritte** — Erkläre dem User:
    - Email absenden
    - **Originalbelege 5 Jahre aufbewahren** (eigene Verantwortung seit 18.03.2026!)
    - Frist: max. 3 Monate nach Reiseende
@@ -289,6 +292,9 @@ K29 wurde bis v1.5.0 fälschlich als "Deutschlandticket Ja" dokumentiert. Tatsä
 
 ### 6. extract_form_field_info.py hat einen Bug
 Das PDF-Skill-Skript `extract_form_field_info.py` crasht bei Choice-Feldern (Dropdowns). Verwende stattdessen ein eigenes pypdf-Skript zum Extrahieren der Felder.
+
+### 7. DB Online-Ticket ist nicht die Rechnung
+Die Reisekostenstelle braucht für Bahnfahrten die formale **Rechnung mit Mehrwertsteuerausweis** (für den Vorsteuerabzug der Uni) — nicht das Online-Ticket, das nach der Buchung per Email kommt. Die Rechnung muss separat im Bahnkundenkonto unter „Meine Reisen" heruntergeladen werden. Online-Tickets allein führen zu Nachforderungen per Email (dokumentierter Fall: Edvardsson, 2026-05-06). Skill prüft das in Phase 2, Schritt 3 — siehe `references/db-rechnung-pruefung.md`.
 
 ---
 

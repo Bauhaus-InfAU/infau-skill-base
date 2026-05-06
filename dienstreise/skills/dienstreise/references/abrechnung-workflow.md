@@ -27,6 +27,9 @@ Erkennbar an: "Online-Ticket", "ICE Fahrkarte", "Sparpreis", "Super Sparpreis"
 Extrahiere: Preis, Strecke (von→nach), Datum, Zugbindung, Klasse
 Achtung: Abschnitte die "nicht gültig" sind (z.B. Weimar→Erfurt bei Deutschlandticket) werden NICHT erstattet
 
+**Zusätzlich klassifizieren — Rechnung oder Online-Ticket?**
+Für jede Bahn-PDF prüfen, ob es die formale Rechnung mit Mehrwertsteuerausweis ist oder nur das Online-Ticket. Kriterien und Ablauf in `references/db-rechnung-pruefung.md`. Das Ergebnis (`Rechnung` ✓ oder `Online-Ticket` ✗) wird in Schritt 2a dem User vorgelegt.
+
 ### Hotelrechnungen
 Erkennbar an: "Check-in", "Check-out", "Booking", Hotel-Name
 Extrahiere: Gesamtpreis, Anzahl Nächte, Frühstück enthalten ja/nein
@@ -38,6 +41,34 @@ Extrahiere: Einzelpreis, Anzahl, Gesamtpreis
 
 ### Sonstige Belege
 ÖPNV-Tickets, Taxi-Quittungen, Parkgebühren etc.
+
+## Schritt 2a: DB-Rechnungsprüfung
+
+**Nur wenn mindestens ein Bahn-Beleg vorliegt.** Vollständige Kriterien in `references/db-rechnung-pruefung.md`.
+
+**Ablauf:**
+
+1. Zeige dem User eine Tabelle aller Bahn-Belege mit Klassifikation (`Rechnung` ✓ / `Online-Ticket` ✗):
+
+   ```
+   Bahn-Belege gefunden:
+
+   | # | Datei                | Strecke      | Typ            |
+   |---|----------------------|--------------|----------------|
+   | 1 | Ticket_ICE_1234.pdf  | Weimar→Köln  | Online-Ticket  |
+   | 2 | Ticket_ICE_5678.pdf  | Köln→Weimar  | Rechnung       |
+   ```
+
+2. Falls **alle** Bahn-Belege bereits Rechnungen sind → kurz bestätigen, weiter mit Schritt 2b.
+
+3. Falls **mindestens ein Online-Ticket** dabei ist:
+   - Warne den User explizit: Die Reisekostenstelle braucht die formale Rechnung mit Mehrwertsteuerausweis (für den Vorsteuerabzug der Uni). Online-Tickets allein führen zu Nachforderungen.
+   - Zeige die bahn.de-Anleitung aus `references/db-rechnung-pruefung.md` (übersetzt in die Sprache des Users).
+   - Frage den User: **(a) Rechnungen jetzt nachladen** (Workflow pausiert, bis User die neuen PDFs in `Belege/` ablegt) oder **(b) Trotzdem weitermachen** (Skill merkt sich die fehlenden Rechnungen und erinnert in Schritt 6 noch einmal).
+
+4. **Workflow läuft in beiden Fällen weiter** — kein Hard-Block. Bei (a) erst nach Bestätigung des Users, dass die neuen PDFs abgelegt sind, Schritt 2 für die geänderten Belege wiederholen.
+
+5. Merke dir intern, ob in der finalen Belegliste noch Online-Tickets ohne Rechnung enthalten sind → für den Pre-Flight-Reminder in Schritt 6.
 
 ## Schritt 2b: Belege einheitlich umbenennen
 
@@ -132,6 +163,10 @@ Mit freundlichen Grüßen
 [Fakultät/Bereich]
 Tel. [Telefon]
 ```
+
+### Pre-Flight-Reminder bei fehlenden Bahn-Rechnungen
+
+Falls in Schritt 2a Online-Tickets als „nicht Rechnung" markiert wurden und der User sich für *Trotzdem weitermachen* entschieden hat: vor dem Versenden noch einmal explizit erinnern (Vorlage in `references/db-rechnung-pruefung.md`). Andernfalls diesen Block überspringen.
 
 ### Nächste Schritte — dem User klar mitteilen:
 

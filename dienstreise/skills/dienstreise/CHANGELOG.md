@@ -4,6 +4,22 @@ Alle wesentlichen Änderungen am Skill werden hier dokumentiert. Format: [Semant
 
 ---
 
+## [1.7.0] — 2026-05-06
+
+### Neu
+- **DB-Rechnungsprüfung**: Bei der Abrechnung erkennt der Skill, ob Bahn-Belege formale Rechnungen mit Mehrwertsteuerausweis sind oder nur Online-Tickets. Falls nur Online-Tickets vorliegen, wird der User gewarnt und bekommt eine Anleitung zum Nachladen aus dem Bahnkundenkonto („Meine Reisen" → Rechnung herunterladen). Hintergrund: Die Reisekostenstelle braucht die formale Rechnung für den Vorsteuerabzug — Online-Tickets allein führen zu Nachforderungen (dokumentierter Fall: Email Edvardsson, 2026-05-06).
+- **Neue Referenzdatei**: `references/db-rechnung-pruefung.md` mit Erkennungskriterien (Rechnungsnummer, MwSt-Zeile, Brutto/Netto, Aussteller-Adresse vs. „Diese Fahrkarte ist keine Rechnung") und User-Vorlagen.
+
+### Geändert
+- Phase 2 (Abrechnung) hat jetzt 8 statt 7 Schritte (neuer Schritt 3: DB-Rechnung prüfen, dahinter um eins verschoben).
+- `references/abrechnung-workflow.md`: neuer Schritt 2a (DB-Rechnungsprüfung) zwischen Schritt 2 und 2b; Pre-Flight-Reminder in Schritt 6, falls der User mit Online-Tickets statt Rechnungen weitergemacht hat.
+- Neuer Fallstrick #7 in `SKILL.md` ("Bekannte Fallstricke").
+
+### BUW-Regelwerk
+- Geprüft am: 2026-04-10 — keine Regeländerung; Anpassung erfolgt aufgrund einer Rückfrage der Reisekostenstelle.
+
+---
+
 ## [1.6.0] — 2026-04-10
 
 ### Neu
