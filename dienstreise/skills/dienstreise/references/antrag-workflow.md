@@ -15,6 +15,8 @@ Reihenfolge:
    - Flug (nur über 1000 km erlaubt)
 5. **Übernachtung?** — Hotel nötig? Biete Recherche an, nenne Städtekatalog-Limit.
 6. **Sonstige Kosten?** — Tagungsgebühren, Eintritt, etc.
+7. **Verpflegung gestellt?** — Sind Mahlzeiten in Teilnahmegebühr, Hotel oder Programm enthalten (Lunches, Conference Dinner, Frühstück)? Recherchiere das selbst am Programm und lass den User nur bestätigen. Treibt die Tagegeld-Kürzung in der Kalkulation.
+8. **Tagegeld beanspruchen oder verzichten?** — Standardfall ist beanspruchen. Frage nur, wenn nicht offensichtlich: *„Möchtest du Tagegeld abrechnen (Regelfall) oder darauf verzichten?"* Bei Verzicht wird in DR-001 Nr. 11 die Verzichts-Checkbox gesetzt und in DR-003 `0` mit Vermerk eingetragen.
 
 Wenn der User bei einem Punkt unsicher ist (z.B. "ich weiß nicht welches Hotel"), wechsle in den Recherche-Modus und hilf aktiv, statt einfach zur nächsten Frage zu springen.
 
@@ -41,7 +43,7 @@ Das ist das Herzstück von Phase 1 — du bist nicht nur Formularausfüller, son
 Wenn nur der Veranstaltungsname bekannt ist:
 1. Suche nach offizieller Website
 2. Finde: Adresse, Datum, Teilnahmegebühr, Programm
-3. Prüfe ob Verpflegung in der Teilnahmegebühr enthalten ist (relevant für Tagegeld!)
+3. **Prüfe ob Verpflegung enthalten ist** — im Programm (Lunches, Coffee Breaks, Conference Dinner, Welcome Reception), in der Teilnahmegebühr, im Hotelangebot (Frühstück). Notiere pro Tag welche Mahlzeit gestellt wird. Das geht direkt in die Tagegeld-Kürzung der Kostenkalkulation (`references/tagegeld-kalkulation.md`) — nicht überspringen.
 
 ## Schritt 3: Ordnerstruktur anlegen
 
@@ -83,16 +85,42 @@ Aus den Recherche-Ergebnissen und User-Angaben berechne:
 
 Die Kostenkalkulation ist eine Excel-Datei. Verwende den xlsx-Skill zum Bearbeiten.
 
-Positionen:
-- Unterkunft: Anzahl Nächte × Preis
-- Tagegeld: Berechne nach Abwesenheitszeiten (siehe rules.md)
-- Bahn: Geschätzte Kosten für ICE/IC
-- Teilnahmegebühr: Wenn vorhanden
-- Nebenkosten: Wenn vorhanden
+> **Die Kalkulation muss vollständig sein.** Die Dez. Finanzen hat am 12.08.2026 ausdrücklich darauf hingewiesen, dass bei Inlandsdienstreisen regelmäßig das **Tagegeld** fehlt und die tatsächlichen Kosten die kalkulierten dadurch übersteigen. Eine leere Zeile ist kein „nicht zutreffend", sondern ein Fehler — jede bewusst leere Zeile dem User mit Begründung melden.
+
+### Zeilen der Vorlage
+
+| Zelle | Position | Was hinein gehört |
+|-------|----------|-------------------|
+| B4 / B5 / B6 | Kopf | Geschäftsort / Zeitraum / Reisender |
+| Zeile 9 | Unterkunft | Anzahl Nächte × Preis, Erläuterung mit Hotelname und Städtekatalog-Bezug |
+| **Zeile 10** | **Tagegeld** | **Pflichtfeld** — siehe unten |
+| Zeile 11 | Bahn | Geschätzte ICE/IC-Kosten Hin- und Rückfahrt |
+| Zeile 12 | Flug | Nur bei Flugreisen (über 1000 km, sonst begründen) |
+| Zeile 13 | Öffent. Verkehrsmittel | Nahverkehr vor Ort, soweit nicht vom Deutschlandticket gedeckt |
+| Zeile 15 | Privat PKW | km × Satz (0,20 / 0,38 EUR) |
+| Zeile 18 | Teilnehmergebühr | Auch eintragen, wenn bereits bezahlt — Vermerk in Spalte B |
+| Zeile 19 | Nebenkosten | Visa, Parkgebühren, Kurtaxe, Eintritt … |
+| C21 | Gesamtsumme | Formel `=SUM(C9:C20)` beibehalten |
+
+### Tagegeld (Zeile 10) — Pflichtposition
+
+Vorgehen vollständig in `references/tagegeld-kalkulation.md`. Kurzfassung:
+
+1. Tage aus dem Reiseverlauf ableiten: An-/Abreisetag je max. **14 EUR**, volle Zwischentage je **28 EUR**.
+2. Gestellte Mahlzeiten aus der Recherche (Schritt 2) abziehen: Frühstück −5,60 / Mittag −11,20 / Abend −11,20 EUR, nie unter 0 EUR pro Tag.
+3. **Tagesaufstellung als Tabelle zeigen und bestätigen lassen** (Format in `tagegeld-kalkulation.md`).
+4. Betrag nach C10, nachvollziehbare Erläuterung nach B10 — z.B. `Anreise 14 € + 3 volle Tage à 28 € + Abreise 14 € = 112 €; abzgl. Verpflegung (4× Frühstück, 3× Mittag) −56 € = 56 €`.
+5. **Nur bei Verzicht** `0` eintragen, mit Erläuterung `Verzicht auf Tagegeld (siehe DR-001 Nr. 11)` — und die Verzichts-Checkbox in DR-001 (`undefined_3`) setzen. Beides muss zusammenpassen.
+
+Bei Auslandsreisen gelten die Ländersätze aus HENRI, nicht 14/28 (siehe `urls.md`).
+
+### Vor der Übergabe: Kalkulation gegenprüfen
+
+Gehe die Checkliste aus `references/tagegeld-kalkulation.md` („Vollständigkeitsprüfung vor der Übergabe") durch, bevor du dem User den Antrag als fertig meldest.
 
 ## Schritt 6: Übergabe an den User
 
-Erkläre die nächsten Schritte klar und konkret:
+Zeige zuerst eine kurze Zusammenfassung der Kalkulation (alle gefüllten Positionen + Gesamtsumme) und weise ausdrücklich auf die Tagegeld-Zeile hin. Erkläre dann die nächsten Schritte klar und konkret:
 
 ### Was der User jetzt tun muss:
 1. **Ausdrucken und unterschreiben** — DR-001 (Nr. 16) und DR-003 ausdrucken und handschriftlich unterschreiben

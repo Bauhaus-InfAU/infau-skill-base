@@ -4,6 +4,29 @@ Alle wesentlichen Änderungen am Skill werden hier dokumentiert. Format: [Semant
 
 ---
 
+## [1.9.0] — 2026-08-12
+
+### Neu
+- **Tagegeld ist Pflichtposition in der Kostenkalkulation (DR-003)**: Auslöser ist die universitätsweite Email von Anna Scheer (Dez. Finanzen) vom 12.08.2026 — bei Inlandsdienstreisen fehlt regelmäßig die Tagegeld-Kalkulation, sodass die tatsächlichen Kosten die kalkulierten übersteigen. Der Skill behandelt Zeile 10 der DR-003 jetzt als Pflichtfeld mit genau zwei zulässigen Zuständen: berechneter Betrag mit Tagesaufstellung, oder `0` mit ausdrücklichem Verzichts-Vermerk.
+- **Neue Referenzdatei**: `references/tagegeld-kalkulation.md` — Sätze (An-/Abreisetag max. 14 EUR, volle Tage 28 EUR), Kürzung bei gestellter Verpflegung (5,60 / 11,20 / 11,20 EUR, Untergrenze 0), Tagesaufstellung als Bestätigungstabelle, Format der Erläuterung in Spalte B, Verzichts-Pfad und Vollständigkeits-Checkliste für die gesamte Kalkulation.
+- **Verpflegungs-Recherche in Phase 1**: Zwei neue Fragen in Schritt 1 (Verpflegung gestellt? / Tagegeld oder Verzicht?). Der Recherche-Schritt prüft aktiv Konferenzprogramm und Hotelangebot auf enthaltene Mahlzeiten und leitet daraus die Kürzung ab — bisher lief das erst in Phase 2 (Schritt 3a).
+- **Vollständigkeitsprüfung vor der Übergabe**: Vor „Antrag fertig" geht der Skill die Kalkulation Zeile für Zeile durch und meldet jede bewusst leere Zeile mit Begründung. Zusammenfassung der Kalkulation inkl. Gesamtsumme wird dem User gezeigt.
+- **Konsistenzprüfung DR-001 ↔ DR-003**: Verzichts-Checkbox Nr. 11 (`undefined_3`) und Tagegeld-Zeile der Kalkulation müssen dieselbe Aussage treffen. Dokumentiert in `references/form-fields-antrag.md`.
+
+### Geändert
+- `references/antrag-workflow.md`: Schritt 1 hat zwei zusätzliche Fragen; Schritt 2 (Veranstaltungsdetails) fordert die Verpflegungsrecherche explizit ein; Schritt 5 komplett überarbeitet mit Zeilentabelle der DR-003-Vorlage und Tagegeld-Pflichtblock; Schritt 6 beginnt mit der Kalkulationszusammenfassung.
+- `references/rules.md`: neue Unterrubrik „Tagegeld muss auch in der Kostenkalkulation stehen (Pflicht)" plus Quellenhinweis.
+- `SKILL.md`: Phase-1-Kurzübersicht auf 9 Fragen erweitert; Schritt 5 (Kostenkalkulation) mit Pflichtcharakter; zwei neue Fallstricke (#7 fehlendes Tagegeld, #8 veraltete HENRI-PDF), bisherige #7 (DB-Rechnung) ist jetzt #9; neue Zeile in „Wichtige Regeln".
+
+### Bugfix
+- **`plugin.json` hing auf 1.6.0 fest** — dadurch lief die installierte Plugin-Version weiter mit dem Stand von v1.6.0, und die Verbesserungen aus v1.7.0 (DB-Rechnungsprüfung) und v1.8.0 (Verpflegungs-Matrix, Email-MD-Dateien) kamen nie im Runtime an. `plugin.json` und der Eintrag in `marketplace.json` (stand auf 1.5.0) sind jetzt auf 1.9.0 gezogen und werden ab sofort bei jedem Release mitgepflegt.
+
+### BUW-Regelwerk
+- **Tagegeld-Beträge geklärt**: Die in `urls.md` verlinkte HENRI-Datei `Tagegeld__Verpflegungspauschalen_2020.pdf` ist ein TFM-Schreiben vom 19.12.2019 und nennt für das ThürRKG noch 12 / 24 EUR. Maßgeblich sind die vom Dez. Finanzen am 12.08.2026 bestätigten **14 / 28 EUR** — der Skill rechnet weiterhin damit. Widerspruch ist in `rules.md`, `urls.md` und Fallstrick #8 dokumentiert, damit er nicht erneut Verwirrung stiftet.
+- Website-Prüfdatum unverändert (2026-04-10) — die Änderung beruht auf einer Email der Dez. Finanzen, nicht auf einer Aktualisierung der HENRI-Seite.
+
+---
+
 ## [1.8.0] — 2026-05-06
 
 ### Neu

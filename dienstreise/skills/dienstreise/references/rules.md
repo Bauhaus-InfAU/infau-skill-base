@@ -12,6 +12,16 @@ Bei **Aus- und Fortbildungsreisen** (§15 ThürRKG) gelten reduzierte Sätze:
 - 14-24h: 10,50 EUR
 - über 24h: 21,00 EUR
 
+> **Quellenlage**: Die in HENRI verlinkte PDF „Tagegeld/Verpflegungspauschalen" ist ein TFM-Schreiben vom 19.12.2019 und nennt für das ThürRKG noch 12 / 24 EUR. Maßgeblich für die aktuelle Praxis sind **14 / 28 EUR** — zuletzt bestätigt durch die Email von Anna Scheer (Dez. Finanzen) vom 12.08.2026. Im Zweifel bei der Reisekostenstelle rückfragen, nicht die alte PDF ansetzen.
+
+### Tagegeld muss auch in der Kostenkalkulation stehen (Pflicht)
+
+Das Tagegeld ist **nicht nur** ein Thema der Abrechnung — es gehört zwingend in die Kostenkalkulation DR-003, sonst liegen die kalkulierten unter den tatsächlichen Kosten. Ansatz: An-/Abreisetag je max. 14 EUR, volle Tage je 28 EUR, gekürzt um bereitgestellte Mahlzeiten. Nur bei ausdrücklichem Verzicht (DR-001 Nr. 11) darf 0 EUR angesetzt werden — dann mit Vermerk.
+
+Vollständige Berechnung, Tagesaufstellung und Vollständigkeits-Checkliste: `references/tagegeld-kalkulation.md`.
+
+Quelle: Email Anna Scheer, 12.08.2026 („Berechnung von Tagegeld – Kostenkalkulation Inlandsdienstreisen").
+
 ### Kürzung bei unentgeltlichen Mahlzeiten (auf Arbeitgeberveranlassung)
 - Frühstück: 20% vom vollen Tagessatz (= 5,60 EUR)
 - Mittagessen: 40% vom vollen Tagessatz (= 11,20 EUR)

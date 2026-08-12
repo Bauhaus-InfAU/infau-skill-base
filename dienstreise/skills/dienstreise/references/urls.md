@@ -26,6 +26,7 @@ Alle Formulare sind unter dem BUW-Intranet (HENRI) verfügbar. Zugang erfordert 
 - **Städtekatalog Inland** (max. ÜK): https://www.uni-weimar.de/fileadmin/user/uni/Uni_intern/HENRI/b/Staedtekatalog_Inland_ab_01.01.2025.pdf
 - **Auslandsübernachtungsgelder 2026**: https://www.uni-weimar.de/fileadmin/user/uni/Uni_intern/HENRI/b/2026_Auslandstage-_und_uebernachtungskosten_ab_02.01.2026.pdf
 - **Tagegelder Inland**: https://www.uni-weimar.de/fileadmin/user/uni/Uni_intern/HENRI/b/Tagegeld__Verpflegungspauschalen_2020.pdf
+  > ⚠️ Diese PDF ist ein TFM-Schreiben vom 19.12.2019 und nennt noch **12 / 24 EUR**. Aktuell anzusetzen sind **14 / 28 EUR** (Email Anna Scheer, Dez. Finanzen, 12.08.2026). Siehe `rules.md` und `tagegeld-kalkulation.md`.
 - **VMT-Tarife**: https://www.uni-weimar.de/fileadmin/user/uni/Uni_intern/HENRI/b/VMT_Preistabelle_allgemein_A4_01_08_2024_screen.pdf
 
 ## Weitere Links

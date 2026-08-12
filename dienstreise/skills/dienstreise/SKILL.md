@@ -1,7 +1,7 @@
 ---
 name: dienstreise
-version: 1.8.0
-last_updated: 2026-05-06
+version: 1.9.0
+last_updated: 2026-08-12
 buw_website_checked: 2026-04-10
 description: >
   Dienstreise-Assistent der Bauhaus-Universität Weimar. Begleitet Beschäftigte durch den gesamten Dienstreise-Prozess: vom Antrag (DR-001) über die Kostenkalkulation (DR-003) bis zur Reisekostenrechnung (DR-004).
@@ -153,7 +153,9 @@ Lies zuerst `references/antrag-workflow.md` für den detaillierten Ablauf.
    4. **Wie?** — Frage nach Beförderungsmittel. Zeige verfügbare Optionen mit Hinweisen: Bahn (Standard, Deutschlandticket beachten), Privat-PKW (nur mit Begründung, 0,20-0,38 EUR/km), Flug (nur > 1000km).
    5. **Übernachtung?** — Biete an, Hotels zu recherchieren. Nenne das Limit aus dem Städtekatalog. Frage ob private Unterkunft genutzt wird.
    6. **Sonstige Kosten?** — Frage nach Tagungsgebühren, Eintritt, etc.
-   7. **Inland/Ausland?** — Falls nicht offensichtlich, frage nach.
+   7. **Verpflegung gestellt?** — Recherchiere selbst am Programm, ob Mahlzeiten enthalten sind (Lunches, Conference Dinner, Hotelfrühstück), und lass den User nur bestätigen. Treibt die Tagegeld-Kürzung.
+   8. **Tagegeld oder Verzicht?** — Regelfall ist beanspruchen. Nur fragen, wenn nicht offensichtlich.
+   9. **Inland/Ausland?** — Falls nicht offensichtlich, frage nach.
 
    Warte nach JEDER Frage auf die Antwort, bevor du die nächste stellst. Wenn der User bei einem Punkt unsicher ist, hilf aktiv (z.B. Zugverbindungen suchen, Hotels recherchieren, Veranstaltungsdetails nachschlagen).
 
@@ -174,7 +176,7 @@ Lies zuerst `references/antrag-workflow.md` für den detaillierten Ablauf.
 
 4. **Formulare ausfüllen** — Fülle DR-001 und DR-003 aus. Details zu den Formularfeldern in `references/form-fields-antrag.md`.
 
-5. **Kostenkalkulation** — Berechne die voraussichtlichen Kosten und fülle DR-003 aus.
+5. **Kostenkalkulation** — Berechne die voraussichtlichen Kosten und fülle DR-003 **vollständig** aus. Die Zeile **Tagegeld** ist Pflicht (An-/Abreisetag je max. 14 EUR, volle Tage je 28 EUR, gekürzt um gestellte Mahlzeiten) — leer bleibt sie nur bei ausdrücklichem Verzicht, dann mit `0` und Vermerk. Tagesaufstellung vor dem Eintragen bestätigen lassen. Details: `references/tagegeld-kalkulation.md`. Vor der Übergabe die Vollständigkeits-Checkliste durchgehen.
 
 6. **Übergabe & nächste Schritte** — Erkläre dem User was zu tun ist: Ausdrucken, unterschreiben, an Franziska Schuchort (InfAU Office, caad@architektur.uni-weimar.de) abgeben — sie leitet an das Dekanat weiter. Details in `references/kontakte-und-ablauf.md`.
 
@@ -321,7 +323,13 @@ K29 wurde bis v1.5.0 fälschlich als "Deutschlandticket Ja" dokumentiert. Tatsä
 ### 6. extract_form_field_info.py hat einen Bug
 Das PDF-Skill-Skript `extract_form_field_info.py` crasht bei Choice-Feldern (Dropdowns). Verwende stattdessen ein eigenes pypdf-Skript zum Extrahieren der Felder.
 
-### 7. DB Online-Ticket ist nicht die Rechnung
+### 7. Tagegeld fehlt in der Kostenkalkulation
+Bis v1.8.0 stand in der Antrag-Phase nur „Tagegeld: Berechne nach Abwesenheitszeiten" — ohne Pflichtcharakter und ohne Vollständigkeitsprüfung. In der Praxis blieb die Zeile deshalb oft leer, die kalkulierten Kosten lagen unter den tatsächlichen. Die Dez. Finanzen hat das am 12.08.2026 universitätsweit angemahnt (Email Anna Scheer). **Fix in v1.9.0**: Tagegeld ist explizite Pflichtposition in DR-003, mit Tagesaufstellung, Verpflegungs-Kürzung, Verzichts-Pfad und Checkliste vor der Übergabe — siehe `references/tagegeld-kalkulation.md`.
+
+### 8. Die HENRI-PDF zum Tagegeld nennt veraltete Beträge
+Die in `urls.md` verlinkte Datei `Tagegeld__Verpflegungspauschalen_2020.pdf` ist ein TFM-Schreiben vom 19.12.2019 und nennt für das ThürRKG **12 / 24 EUR** — mit der ausdrücklichen Klarstellung, dass die steuerliche Anhebung auf 14/28 damals nicht auf das ThürRKG durchschlug. Maßgeblich für die heutige Praxis sind **14 / 28 EUR** (bestätigt durch Email Anna Scheer, 12.08.2026). Nicht die alte PDF ansetzen; im Zweifel bei der Reisekostenstelle rückfragen.
+
+### 9. DB Online-Ticket ist nicht die Rechnung
 Die Reisekostenstelle braucht für Bahnfahrten die formale **Rechnung mit Mehrwertsteuerausweis** (für den Vorsteuerabzug der Uni) — nicht das Online-Ticket, das nach der Buchung per Email kommt. Die Rechnung muss separat im Bahnkundenkonto unter „Meine Reisen" heruntergeladen werden. Online-Tickets allein führen zu Nachforderungen per Email (dokumentierter Fall: Edvardsson, 2026-05-06). Skill prüft das in Phase 2, Schritt 3 — siehe `references/db-rechnung-pruefung.md`.
 
 ---
@@ -331,6 +339,7 @@ Die Reisekostenstelle braucht für Bahnfahrten die formale **Rechnung mit Mehrwe
 Für die vollständigen Regeln lies `references/rules.md`. Hier die wichtigsten:
 
 - **Tagegeld Inland**: Ab 14h Abwesenheit = 14 EUR, über 24h = 28 EUR
+- **Tagegeld gehört in die Kostenkalkulation**: DR-003 Zeile „Tagegeld" nie leer lassen — An-/Abreisetag je max. 14 EUR, volle Tage je 28 EUR, gekürzt um gestellte Mahlzeiten. Nur bei Verzicht 0 EUR mit Vermerk (Dez. Finanzen, 12.08.2026)
 - **Übernachtung**: Max. laut Städtekatalog (ohne Vorabgenehmigung höherer Kosten)
 - **Hotelrechnung**: Möglichst auf BUW ausstellen lassen (sonst kein Frühstück erstattbar)
 - **Ausschlussfrist**: Abrechnung innerhalb von 3 Monaten nach Reiseende einreichen!

@@ -269,6 +269,12 @@ Beide Seiten haben am unteren Rand identische "Anlage:"-Checkboxen in zwei Zeile
 |---------|-----|-------------|
 | `undefined_3` | Btn | ☑ Auf Tagegeld wird verzichtet | `/On` |
 
+> **Konsistenz mit DR-003**: Diese Checkbox und die Tagegeld-Zeile der Kostenkalkulation müssen dieselbe Aussage treffen.
+> - Checkbox **nicht** gesetzt (Regelfall) → DR-003 Zeile 10 enthält den berechneten Betrag mit Tagesaufstellung.
+> - Checkbox gesetzt → DR-003 Zeile 10 enthält `0` mit Erläuterung „Verzicht auf Tagegeld (siehe DR-001 Nr. 11)".
+>
+> Setze die Verzichts-Checkbox nie ohne ausdrückliche Ansage des Users. Berechnung: `references/tagegeld-kalkulation.md`.
+
 #### Verpflegungs-Checkboxen (Kontrollkästchen36-45)
 
 Sieben Wochentage in der Tabelle. Die Checkboxen markieren, an welchen Tagen unentgeltliche Verpflegung bereitgestellt wird:
